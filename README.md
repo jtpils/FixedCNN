@@ -14,7 +14,7 @@ Several fundamental functions have been completed and carried on in a parallel w
 
 ### Requirement
 
-All codes are tested in MATLAB R2017b and don't support GPU acceleration, which means you should only run it on small dataset otherwise the runtime will be quite scaring. As I say above, this library is designed for simulating FP-CNN and it's an experimental research which helps us understand FP behaviors of deep neural networks. Furthermore, it can help people who want to deploy their CNN algorithms on FP devices (FPGA/ASIC etc) verify the effectiveness of quantization method.
+All codes are tested in **MATLAB R2017b** and don't support GPU acceleration, which means you should only run it on small dataset otherwise the runtime will be quite scaring. As I say above, this library is designed for simulating FP-CNN and it's an experimental research which helps us understand FP behaviors of deep neural networks. Furthermore, it can help people who want to deploy their CNN algorithms on FP devices (FPGA/ASIC etc) verify the effectiveness of quantization method.
 
 ### TODO
 
