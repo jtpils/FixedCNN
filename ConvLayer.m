@@ -8,6 +8,6 @@ function o_map = ConvLayer(im,ker,t,f)
     
     o_map = fi(zeros(out_h,out_w,k_out),t,f);
     for i=[1:1:im_d]
-        o_map = o_map + ConvOneMap(im,ker(:,:,i,:),t,f);
+        o_map = o_map + ConvOneMap(im(:,:,i),ker(:,:,i,:),t,f);
     end
 end

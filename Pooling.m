@@ -107,7 +107,7 @@ function res = MAXPoolingOneChannel(im,out_h,t,f,poolsize,poolstride)
     w_w = poolsize(2);
     
     pool_len = im_h-w_h+1;
-    pos = repmat([1:s_x:pool_len],[out_h,1])+repmat(s_x*pool_len*[0:out_h],[1,out_h]);
+    pos = repmat([1:s_x:pool_len],[out_h,1])+repmat(s_x*pool_len*[0:out_h-1]',[1,out_h]);
     pool_col = max(im2col(im,[w_h,w_w],'sliding'));
     
     res = pool_col(pos(:));
