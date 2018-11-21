@@ -8,5 +8,6 @@ function o_map = ConvOneMap(im,ker,t,f)
     stride = 1;
     out_h = ceil(im_h+2-k_h)/stride+1;
     out_w = out_h;
-    o_map = reshape(flipud(rot90(ker_mat*im_mat)),[out_h,out_w,k_c]);
+    conv_col = ker_mat*im_mat;
+    o_map = reshape(flipud(rot90(conv_col)),[out_h,out_w,k_c]);
 end
