@@ -1,6 +1,6 @@
 function o_map = ConvLayer(im,ker,t,f)
     [im_h,im_w,im_d]=size(im);
-    [k_h,k_w,k_in,k_out]=size(ker);
+    [k_h,k_w,k_in,k_out]=size(im);
     
     stride=1;
     out_h = ceil(im_h+2-k_h)/stride+1;

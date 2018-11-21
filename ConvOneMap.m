@@ -1,6 +1,7 @@
 function o_map = ConvOneMap(im,ker,t,f)
     [im_h,im_w]=size(im);
-    [k_h,k_w,k_c] = size(ker);
+    [k_h,k_w,k_in,k_c] = size(ker);
+    ker = reshape(ker,[k_h,k_w,k_c]);
     im_mat = im2col(ZeroPadding(im,t,f),[k_h,k_w],'sliding');
     ker_mat = reshape(permute(ker,[3,1,2]),[k_c,numel(ker)/k_c]);
     
