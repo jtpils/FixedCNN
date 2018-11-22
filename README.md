@@ -9,7 +9,7 @@ Several fundamental functions have been completed and carried on in a parallel w
 |:-----------------------:|:--------------------:|:----------------------------:|
 | Conv2d                  |      Completed       |                              |
 | Depthwise Conv          |     Uncompleted      |    Don't support for now     |
-| Pooling                 |     Uncompleted      |           MAX/AVG*           |
+| Pooling                 |      Completed       |           MAX/AVG*           |
 | ReLU                    |      Completed       |                              |
 | FC                      |     Uncompleted      |        Working on it         |
 | Softmax                 |     Uncompleted      |        Working on it         |
