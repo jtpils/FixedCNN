@@ -25,4 +25,4 @@ All codes are tested in **MATLAB R2017b** and don't support GPU acceleration, wh
 
 - To enhance the library's robustness and compatibility, an elaborate and overall unit test module is under construsting which will check more complicated conditions in application scenarios.
 
-- I try my best to design every function as similar with TensorFlow-type as possible so that people who are fimiliar with TensorFlow can easily tranfer to this library without much learning effort.
+- I try my best to design every function to be similar to TensorFlow-type as possible so that people who are fimiliar with TensorFlow can easily tranfer to this library without much learning effort.
