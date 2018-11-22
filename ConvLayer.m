@@ -11,3 +11,4 @@ function o_map = ConvLayer(im,ker,t,f)
         o_map = o_map + ConvOneMap(im(:,:,i),ker(:,:,i,:),t,f);
     end
 end
+
