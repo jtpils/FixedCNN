@@ -21,6 +21,6 @@ All codes are tested in **MATLAB R2017b** and don't support GPU acceleration, wh
 
 ### TODO
 
-Although the MATLAB library can implement a simple FP-CNN for now, there are still many problems in this code. I will fix these problems in the future.
+- Although the MATLAB library can implement a simple FP-CNN for now, there are still many problems in this code. I will fix these problems in the future.
 
-To enhance the library's robustness and compatibility, an elaborate and overall unit test module is under construsting which will check more complicated conditions in application scenarios.
+- To enhance the library's robustness and compatibility, an elaborate and overall unit test module is under construsting which will check more complicated conditions in application scenarios.
