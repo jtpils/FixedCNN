@@ -8,9 +8,10 @@ Several fundamental functions have been completed and carried on in a parallel w
 |   **Type**  |    **Status**   |       **Description**       |
 |:-------:|:-----------:|:-----------------------:|
 | Conv2d  | Completed   |                         |
-| Pooling | Uncompleted | Only support MAX method |
+| Pooling | Uncompleted | MAX/AVG*                |
 | ReLU    | Completed   |                         |
 | FC      | Uncompleted | Working on it           |
+#### * Now you can use self-defined pooling function other than MAX/AVG. Before applying customed pooling function, you should add the function name and its definition in the Pool_Type register table.
 
 ### Requirement
 
