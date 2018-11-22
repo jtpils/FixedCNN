@@ -5,13 +5,14 @@ The motivation for this project is creating a genearal library which can simulat
 ### Completed
 Several fundamental functions have been completed and carried on in a parallel way as possible. The comprehensive review of all functions as below:
 
-|   **Type**  |    **Status**   |       **Description**       |
-|:-------:|:-----------:|:-----------------------:|
-| Conv2d  | Completed   |                         |
-| Pooling | Uncompleted | MAX/AVG*                |
-| ReLU    | Completed   |                         |
-| FC      | Uncompleted | Working on it           |
-| Softmax | Uncompleted | Working on it           |
+|        **Type**         |       **Status**     |        **Description**       |
+|:-----------------------:|:--------------------:|:----------------------------:|
+| Conv2d                  |      Completed       |                              |
+| Depthwise Conv          |     Uncompleted      |    Don't support for now     |
+| Pooling                 |     Uncompleted      |           MAX/AVG*           |
+| ReLU                    |      Completed       |                              |
+| FC                      |     Uncompleted      |        Working on it         |
+| Softmax                 |     Uncompleted      |        Working on it         |
 #### * Now you can use self-defined pooling function other than MAX/AVG. Before applying customed pooling function, you should add the function name and its definition in the Pool_Type register table.
 
 ### Requirement
