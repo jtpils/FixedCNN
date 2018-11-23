@@ -9,5 +9,7 @@ img = load('test_img\mat_img\img.mat');
 cnn_par = load('model.mat');
 net = cnn_par.net;
 profile on
-layer_res = FixConvNet(img.img1,net,t,f,roundm);
+for i=1:20
+    layer_res = FixConvNet(img.img1,net,t,f,roundm);
+end
 profile viewer

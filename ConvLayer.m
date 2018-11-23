@@ -19,7 +19,8 @@ function o_map = ConvLayer(im,ker,t,f)
 %     end
 %     
 %     tmp = arrayfun(@(u) ConvOneMap(u.im,u.ker,u.t,u.f),S,'UniformOutput',false);
-
+    im = ZeroPadding(im,t,f);
+    
     for i=[1:1:im_d]
         o_map = o_map + ConvOneMap(im(:,:,i),ker(:,:,i,:),t,f);
 %        o_map = o_map + tmp{i};
