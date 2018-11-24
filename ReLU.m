@@ -1,5 +1,4 @@
-function res = ReLU(im,t,f)
-    res = fi(zeros(size(im)),t,f);
-    res(im>0)=im(im>0);
+function im = ReLU(im,t,f)
+    im(im<0)=0;   
 end
     
