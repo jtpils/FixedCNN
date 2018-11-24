@@ -8,44 +8,28 @@ function res = Conv2d(im,ker,t,f,stride,padding)
     if im_d~=k_in
         error("Map dimension and Kernel dimension don't match.");
     end
-    
-    pad_key = {'SAME','VALID'};
-    pad_func_reg = {'ceil','floor'};
-    pad_type_reg = containers.Map(pad_key,pad_func_reg);
-    
-    try
-        pad_func = str2func(pad_type_reg(padding));
-        out_size = [pad_func((channel_size-window_shape)./stride)+1,k_out];
-    catch error_info
-        disp(error_info);
-        error("Unknown Padding Type!");
-    end
-    
-    if strcmp(padding,'SAME')
-        [im,channel_size]= ConvPadding(im,t,f);
-    end
-    res = fi(zeros([out_size,k_out]),t,f);
-    for i=1:k_in
-        one_ker = reshape(ker(:,:,i,:),[window_shape,k_out]);
-        res = res + Conv2dOneChannel(im(:,:,i),one_ker,channel_size,out_size,window_shape,stride);
-    end
+    [im,out_size,channel_size]=PaddingByType(im,t,f,im_d,window_shape,channel_size,stride,padding);
+    res = Conv2dTensor(im,ker,im_d,k_out,channel_size,out_size,window_shape,stride); 
 end
 
-function res = Conv2dOneChannel(im,one_ker,channel_size,out_size,window_shape,stride)
-    conv_len = channel_size-window_shape+1;
-    ker_stack = reshape(one_ker,out_size(3),[]);
+function res = Conv2dTensor(im,ker,im_d,k_out,channel_size,out_size,window_shape,stride)
+    pool_len = channel_size-window_shape+1;
     
-    pos_one_col = repmat([1:stride(1):conv_len(1)],[out_size(1),1]);
-    gap_every_col = repmat(stride(2)*conv_len(1)*[0:out_size(2)-1]',[1,out_size(1)]);
+    pos_one_col = repmat([1:stride(1):pool_len(1)],[out_size(1),1]);
+    gap_every_col = repmat(stride(2)*pool_len(1)*[0:out_size(2)-1]',[1,out_size(1)]);
     pos = pos_one_col+gap_every_col;
-    
+      
     tmp = im2col(reshape([1:prod(channel_size)],channel_size),window_shape,'sliding');
+    
     tmp = tmp(:,pos(:));
+    tmp1 = zeros(prod(window_shape),prod(out_size),im_d);
+    for i =1:im_d
+        tmp1(:,:,i)=(i-1)*prod(channel_size)+tmp;
+    end
+    ker_mat = reshape(ker,[im_d*prod(window_shape),k_out])';
     
-    conv_res = ker_stack*im(tmp);
-    res = reshape(conv_res,out_size)';
-end
-
-function ConvPadding(im,t,f)
+    im_mat =  reshape(permute(im(tmp1),[2,1,3]),[prod(out_size),prod(window_shape)*im_d])';
     
+    conv_tmp = ker_mat*im_mat;
+    res = permute(reshape(conv_tmp',[out_size,k_out]),[2,1,3]);
 end

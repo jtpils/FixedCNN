@@ -32,9 +32,11 @@ function res = PoolingByType(im,t,f,window_shape,stride,pad_method,pool_func)
         disp(pad_error);
         error("Unknown Pad Type");
     end
-    if strcmp(pad_method,'SAME')
-        [im,channel_size] = PoolPadding(im,channel_size,im_d,out_size,stride,window_shape,t,f);
-    end
+%     if strcmp(pad_method,'SAME')
+%         [im,channel_size] = PoolPadding(im,channel_size,im_d,out_size,stride,window_shape,t,f);
+%     end
+    
+    [im,out_size,channel_size] = PaddingByType(im,t,f,im_d,window_shape,channel_size,stride,pad_method);
     
     res = PoolingTensor(im,im_d,channel_size,out_size,window_shape,stride,pool_func);
 end
@@ -74,3 +76,23 @@ function res = PoolingOneChannel(im,channel_size,out_size,window_shape,stride,po
     tmp = tmp(:,pos(:));
     res = reshape(pool_func(im(tmp)),out_size)';
 end
+
+% function [res,out_size,new_channel_size] = PaddingByType(im,t,f,im_d,window_shape,channel_size,stride,padding_type)
+%     switch padding_type
+%         case 'SAME'
+%             out_size = ceil(channel_size)./stride;
+%             pad_needed = (out_size-1).*stride + window_shape - channel_size;
+%             pad_top_left = floor(pad_needed/2);
+%  %           pad_bottom_right = pad_needed - pad_top_left;
+%             res = fi(zeros([channel_size+pad_needed,im_d]),t,f);           
+%             pad_end = pad_top_left + channel_size;
+%             res(1+pad_top_left(1):pad_end(1),1+pad_top_left(2):pad_end(2),:)=im;
+%         case 'VALID'
+%             out_size =ceil((channel_size - window_shape +1)./stride);
+%             pad_needed = [0,0];
+%             res = im;
+%         otherwise
+%             error('Unknown Padding Type');
+%     end
+%     new_channel_size = pad_needed + channel_size;
+% end
