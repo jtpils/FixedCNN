@@ -15,7 +15,7 @@ end
 function res = Conv2dTensor(im,ker,im_d,k_out,channel_size,out_size,window_shape,stride)
     pool_len = channel_size-window_shape+1;
     
-    pos_one_col = repmat([1:stride(1):pool_len(1)],[out_size(1),1]);
+    pos_one_col = repmat([1:stride(1):pool_len(1)],[out_size(2),1]);
     gap_every_col = repmat(stride(2)*pool_len(1)*[0:out_size(2)-1]',[1,out_size(1)]);
     pos = pos_one_col+gap_every_col;
       
