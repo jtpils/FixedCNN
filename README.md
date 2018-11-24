@@ -21,6 +21,7 @@ Several fundamental functions have been completed and carried on in a parallel w
   - L1 Vector: 1×N array
   - L2 Matrix: M×N matrix
   - L3 Tensor: M×N×[H1,H2 ...], where the length of [H] is no less than 1.
+  
   Higher the PL is, faster the function runs.
 
 - Conv2d calculates 2d convolution of the input tensor, PL is L3, the input and output format are TF-compatible.
