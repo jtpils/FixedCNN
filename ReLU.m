@@ -1,4 +1,4 @@
-function im = ReLU(im,t,f)
+function im = ReLU(im)
     im(im<0)=0;   
 end
     

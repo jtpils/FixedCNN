@@ -36,11 +36,16 @@ function res = PoolingTensor(im,im_d,channel_size,out_size,window_shape,stride,p
       
     tmp = im2col(reshape([1:prod(channel_size)],channel_size),window_shape,'sliding');
     
+%     tmp = tmp(:,pos(:));
+%     tmp1 = zeros(prod(window_shape),prod(out_size),im_d);
+%     for i =1:im_d
+%         tmp1(:,:,i)=(i-1)*prod(channel_size)+tmp;
+%     end
+
     tmp = tmp(:,pos(:));
-    tmp1 = zeros(prod(window_shape),prod(out_size),im_d);
-    for i =1:im_d
-        tmp1(:,:,i)=(i-1)*prod(channel_size)+tmp;
-    end
+    [t1,t2] = size(tmp);
+    tmp1 = repelem((0:im_d-1)*prod(channel_size),t1,t2)+repmat(tmp,1,im_d);
+    tmp1 = reshape(tmp1,[t1,t2,im_d]);
     
     res = permute(reshape(pool_func(im(tmp1)),[out_size,im_d]),[2,1,3]);
 end

@@ -12,8 +12,17 @@ roundm = 'floor';
 img = load('test_img\mat_img\img.mat');
 cnn_par = load('model.mat');
 net = cnn_par.net;
+img = fi(img.img1,t,f);
+
+resfile = 'recog_res.txt';
+fileID = fopen(resfile,'w');
+names = {"ship", "land", "sea"};
+
 profile on
 for i=1:10
-    layer_res = FixConvNet(img.img1,net,t,f,roundm);
+    layer_res = FixConvNet(img,net,t,f,roundm);
+    [val,label] = max(layer_res.layers{12}.maps,[],3);
+    fprintf(fileID,'%s\n',names{label});
 end
 profile viewer
+fclose(fileID);

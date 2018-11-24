@@ -1,8 +1,7 @@
 function cnn_result = FixConvNet(im,cnn_net,t,f,rounding_method)
 
-input_img = fi(im,t,f);
 input_img.RoundingMethod = rounding_method;
-cnn_result.layers{1}.maps = input_img;
+cnn_result.layers{1}.maps = im;
 cnn_layers = numel(cnn_net.layers);
 
 for i = 1:cnn_layers
@@ -18,9 +17,15 @@ for i = 1:cnn_layers
             cnn_result.layers{i+1}.maps = AddBias(Conv2d(map_layer.maps, net_layer.filters,t,f,[1,1],'SAME'),net_layer.bias,t,f);
 		case 'pool'
             poolstride = net_layer.stride*ones(1,2);
-			cnn_result.layers{i+1}.maps = Pooling(map_layer.maps,t,f,net_layer.pool ,'MAX',poolstride,'SAME'); % Pooling(im,t,f,poolsize,pool_type,poolstride,pad_method)
+            method = upper(net_layer.method);
+            if length(net_layer.pad)>1
+                pad_method = 'SAME';
+            else
+                pad_method = 'VALID';
+            end
+			cnn_result.layers{i+1}.maps = Pooling(map_layer.maps,t,f,net_layer.pool ,method,poolstride,pad_method); % Pooling(im,t,f,poolsize,pool_type,poolstride,pad_method)
 		case 'relu'
-			cnn_result.layers{i+1}.maps = ReLU(map_layer.maps,t,f);
+			cnn_result.layers{i+1}.maps = ReLU(map_layer.maps);
 		case 'softmaxloss'
 			disp('softmaxloss layer');
 		case 'softmax'
