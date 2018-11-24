@@ -8,12 +8,24 @@ Several fundamental functions have been completed and carried on in a parallel w
 |        **Type**         |       **Status**     |        **Description**       |
 |:-----------------------:|:--------------------:|:----------------------------:|
 | Conv2d                  |      Completed       |                              |
-| Depthwise Conv          |     Uncompleted      |    Don't support for now     |
+| Depthwise Conv          |     Uncompleted      |        Working on it         |
 | Pooling                 |      Completed       |           MAX/AVG*           |
 | ReLU                    |      Completed       |                              |
 | FC                      |     Uncompleted      |        Working on it         |
 | Softmax                 |     Uncompleted      |        Working on it         |
 #### * Now you can use self-defined pooling function other than MAX/AVG. Before applying customed pooling function, you should add the function name and its definition in the Pool_Type register table.
+
+#### Some Details
+
+- The parallelism level (PL) of the source code is from vector to tensor. The definition of different levels is as below:
+  - L1 Vector: 1×N array
+  - L2 Matrix: M×N matrix
+  - L3 Tensor: M×N×[H1,H2 ...], where the length of [H] is no less than 1.
+  
+  Higher the PL is, faster the function runs.
+
+- Conv2d calculates 2d convolution of the input tensor, PL is L3, the input and output format are TF-compatible.
+- Pooling calculates 2d pooling of the input tensor, PL is L3, while pooling function doesn't support 3d pooling like TF.
 
 ### Requirement
 
@@ -25,4 +37,4 @@ All codes are tested in **MATLAB R2017b** and don't support GPU acceleration, wh
 
 - To enhance the library's robustness and compatibility, an elaborate and overall unit test module is under construsting which will check more complicated conditions in application scenarios.
 
-- I try my best to design every function to be similar to TensorFlow-type as possible so that people who are familiar with TensorFlow can easily tranfer to this library without much learning effort.
+- I try my best to design every function to be similar to TensorFlow-style as possible so that people who are familiar with TensorFlow can easily tranfer to this library without much learning effort.
