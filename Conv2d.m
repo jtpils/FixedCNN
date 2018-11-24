@@ -23,6 +23,11 @@ function res = Conv2dTensor(im,ker,im_d,k_out,channel_size,out_size,window_shape
     
     tmp = tmp(:,pos(:));
     tmp1 = zeros(prod(window_shape),prod(out_size),im_d);
+    
+%     tmp1 = repmat(tmp,[1,im_d]);
+%     tmp1 = kron(0:im_d-1,prod(channel_size))+tmp1;
+%     tmp1 = reshape(tmp1,channel)
+    
     for i =1:im_d
         tmp1(:,:,i)=(i-1)*prod(channel_size)+tmp;
     end
