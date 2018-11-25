@@ -5,15 +5,15 @@ The motivation for this project is creating a general library which can simulate
 ### Project Progress
 Several fundamental functions have been completed and carried on in a parallel way as possible. The comprehensive review of all functions as below:
 
-|        **Type**         |       **Status**     |        **Description**       |
-|:-----------------------:|:--------------------:|:----------------------------:|
-| Conv2d                  |      Completed       |                              |
-| Depthwise Conv          |      Completed       |                              |
-| Pooling                 |      Completed       |           MAX/AVG*           |
-| ReLU                    |      Completed       |                              |
-| FC                      |     Uncompleted      |        Working on it         |
-| Softmax                 |     Uncompleted      |        Working on it         |
-| Pointwise Conv          |         ?            |  Can be replaced by Conv2d** |
+|        **Type**         |       **Status**     |        **Description**          |
+|:-----------------------:|:--------------------:|:-------------------------------:|
+| Conv2d                  |      Completed       |                                 |
+| Depthwise Conv          |      Completed       |                                 |
+| Pooling                 |      Completed       |           MAX/AVG*              |
+| ReLU                    |      Completed       |                                 |
+| FC                      |      Completed       | By converting FC to Conv or MM  |
+| Softmax                 |     Uncompleted      |        Working on it            |
+| Pointwise Conv          |         ?            |  Can be replaced by Conv2d**    |
 ##### * Now you can use self-defined pooling function other than MAX/AVG. Before applying customed pooling function, you should add the function name and its definition in the Pool_Type register table.
 
 ##### ** Pointwise Conv2d can be implemented by Conv2d, but it will take a lot of operations to reordering elements by doing this through Conv2d. So I'm trying to find a more efficient way to directly apply Pointwise Conv2d. 
