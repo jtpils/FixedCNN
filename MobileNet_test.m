@@ -1,3 +1,7 @@
+% Author: Zhao Mingxin
+% Date:   2018/11/25
+% Description: as below
+
 wordlen =16;
 fraclen =8;
 f = fimath('CastBeforeSum',0, 'OverflowMode', 'Saturate', 'RoundMode', 'floor', ... 

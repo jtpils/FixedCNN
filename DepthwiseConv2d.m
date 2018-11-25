@@ -1,3 +1,7 @@
+% Author: Zhao Mingxin
+% Date:   2018/11/25
+% Description: as below
+
 function res = DepthwiseConv2d(im,ker,t,f,stride,padding_method)
     [im_h,im_w,im_d]=size(im);
     [k_h,k_w,k_in,multiplier] = size(ker);
