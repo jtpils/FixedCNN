@@ -1,6 +1,6 @@
 ### Fixed-point Convolutional Neural Networks Simulation Library in MATLAB
 
-The motivation for this project is creating a genearal library which can simulate a CNN with fixed-point operations. Since python is poor in fixed-point calculation support, I try to write the project in MATLAB thoroughly. While the fi object in MATLAB can conviniently express fixed-point(FP) operations, there are still many functions in MATLAB that don't support fi. So I have to rewrite a lot of basic functions such as conv2d etc step by step.
+The motivation for this project is creating a general library which can simulate a CNN with fixed-point operations. Since python is poor in fixed-point calculation support, I try to write the project in MATLAB thoroughly. While the fi object in MATLAB can conviniently express fixed-point(FP) operations, there are still many functions in MATLAB that don't support fi. So I have to rewrite a lot of basic functions such as conv2d etc step by step.
 
 ### Project Progress
 Several fundamental functions have been completed and carried on in a parallel way as possible. The comprehensive review of all functions as below:
