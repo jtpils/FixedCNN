@@ -8,7 +8,7 @@ Several fundamental functions have been completed and carried on in a parallel w
 |        **Type**         |       **Status**     |        **Description**       |
 |:-----------------------:|:--------------------:|:----------------------------:|
 | Conv2d                  |      Completed       |                              |
-| Depthwise Conv          |     Uncompleted      |        Working on it         |
+| Depthwise Conv          |      Completed       |                              |
 | Pooling                 |      Completed       |           MAX/AVG*           |
 | ReLU                    |      Completed       |                              |
 | FC                      |     Uncompleted      |        Working on it         |
