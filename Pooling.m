@@ -35,7 +35,9 @@ function res = PoolingTensor(im,im_d,channel_size,out_size,window_shape,stride,p
     pool_len = channel_size-window_shape+1;
     
 %   此处有问题，不适用于长宽不相等的图像，待处理
-
+%   计算滑动窗口对应的im2col后图像元素的标号，先计算标号，再提取数据创建矩阵，最后再进行矩阵
+%   乘法是减少计算时间的核心，在必要的实际计算发生之前，不要轻易去创建fi对象和改变fi对象形状，
+%   因为fi对象的创建和改变位置非常耗时。尽可能多使用标号来代替实际元素。
     pos_one_col = repmat([1:stride(1):pool_len(1)],[out_size(2),1]);
     gap_every_col = repmat(stride(2)*pool_len(1)*[0:out_size(2)-1]',[1,out_size(1)]);
     pos = pos_one_col+gap_every_col;
@@ -55,5 +57,5 @@ function res = PoolingTensor(im,im_d,channel_size,out_size,window_shape,stride,p
     tmp1 = repelem((0:im_d-1)*prod(channel_size),t1,t2)+repmat(tmp,1,im_d);
     tmp1 = reshape(tmp1,[t1,t2,im_d]);
     
-    res = permute(reshape(pool_func(im(tmp1)),[out_size,im_d]),[2,1,3]);
+    res = permute(reshape(pool_func(im(tmp1)),[fliplr(out_size),im_d]),[2,1,3]);
 end

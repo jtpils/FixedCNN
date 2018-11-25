@@ -12,8 +12,12 @@ function res = Conv2d(im,ker,t,f,stride,padding)
     if im_d~=k_in
         error("Map dimension and Kernel dimension don't match.");
     end
-    [im,out_size,channel_size]=PaddingByType(im,t,f,im_d,window_shape,channel_size,stride,padding);
-    res = Conv2dTensor(im,ker,im_d,k_out,channel_size,out_size,window_shape,stride); 
+    if k_h>1 || k_w>1
+        [im,out_size,channel_size]=PaddingByType(im,t,f,im_d,window_shape,channel_size,stride,padding);
+        res = Conv2dTensor(im,ker,im_d,k_out,channel_size,out_size,window_shape,stride); 
+    else
+        res = PointwiseConv2d(im,ker,t,f);
+    end
 end
 
 function res = Conv2dTensor(im,ker,im_d,k_out,channel_size,out_size,window_shape,stride)
@@ -44,5 +48,5 @@ function res = Conv2dTensor(im,ker,im_d,k_out,channel_size,out_size,window_shape
     im_mat =  reshape(permute(im(tmp1),[2,1,3]),[prod(out_size),prod(window_shape)*im_d])';
     
     conv_tmp = ker_mat*im_mat;
-    res = permute(reshape(conv_tmp',[out_size,k_out]),[2,1,3]);
+    res = permute(reshape(conv_tmp',[fliplr(out_size),k_out]),[2,1,3]);
 end
