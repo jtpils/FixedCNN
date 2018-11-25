@@ -1,8 +1,8 @@
 clc;
 var_list = {'t','f','wordlen','fraclen','roundm','img','cnn_par','net','layer_res'};
 clear(var_list{:});
-wordlen =20;
-fraclen =10;
+wordlen =16;
+fraclen =8;
 f = fimath('CastBeforeSum',0, 'OverflowMode', 'Saturate', 'RoundMode', 'floor', ... 
 'ProductMode', 'SpecifyPrecision', 'SumMode', 'SpecifyPrecision', 'ProductWordLength',2*wordlen, ...
 'ProductFractionLength',2*fraclen, 'SumWordLength', wordlen, 'SumFractionLength', fraclen);
