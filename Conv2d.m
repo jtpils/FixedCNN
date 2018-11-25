@@ -1,3 +1,7 @@
+% Author: Zhao Mingxin
+% Date:   2018/11/25
+% Description: Conv2d function
+
 function res = Conv2d(im,ker,t,f,stride,padding)
     [im_h,im_w,im_d]=size(im);
     [k_h,k_w,k_in,k_out] = size(ker);

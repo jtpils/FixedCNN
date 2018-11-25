@@ -1,3 +1,7 @@
+% Author: Zhao Mingxin
+% Date:   2018/11/25
+% Description: Pooling function for 2d pooling of input tensor
+
 function res = Pooling(im,t,f,window_shape,pool_type,stride,pad_method)
     poolreg ={'MAX','AVG'};
     poolregfunc = {'max','mean'};
