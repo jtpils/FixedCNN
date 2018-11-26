@@ -1,4 +1,4 @@
-function cnn_result = FixConvNet(im,cnn_net,t,f,rounding_method)
+function cnn_result = BoatNet(im,cnn_net,t,f,rounding_method)
 
 input_img.RoundingMethod = rounding_method;
 cnn_result.layers{1}.maps = im;
