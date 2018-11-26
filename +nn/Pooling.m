@@ -32,13 +32,9 @@ function res = PoolingByType(im,t,f,window_shape,stride,pad_method,pool_func)
 end
 
 function res = PoolingTensor(im,im_d,channel_size,out_size,window_shape,stride,pool_func)
-    
-% %   此处有问题，不适用于长宽不相等的图像，待处理
-% %   计算滑动窗口对应的im2col后图像元素的标号，先计算标号，再提取数据创建矩阵，最后再进行矩阵
-% %   乘法是减少计算时间的核心，在必要的实际计算发生之前，不要轻易去创建fi对象和改变fi对象形状，
-% %   因为fi对象的创建和改变位置非常耗时。尽可能多使用标号来代替实际元素。
-
+%   Get element position of input feature map.
     tmp1 = GetElemPos(im_d,channel_size,out_size,window_shape,stride);
-
+    
+%   Implement pooling function on im2col and reshape result into output shape
     res = permute(reshape(pool_func(im(tmp1)),[fliplr(out_size),im_d]),[2,1,3]);
 end

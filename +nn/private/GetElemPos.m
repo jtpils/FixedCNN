@@ -1,3 +1,7 @@
+% Author: Zhao Mingxin
+% Date:   2018/11/26
+% Description: Calculate im2col element position of original input map
+
 function res = GetElemPos(im_d,channel_size,out_size,window_shape,stride)
     pool_len = channel_size-window_shape+1;
     

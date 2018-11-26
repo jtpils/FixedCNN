@@ -17,15 +17,19 @@ function res = DepthwiseConv2d(im,ker,t,f,stride,padding_method)
     res = DepthwiseConvTensor(im,ker,t,f,im_d,multiplier,channel_size,out_size,window_shape,stride);
 end
 
-function res = DepthwiseConvTensor(im,ker,t,f,im_d,multiplier,channel_size,out_size,window_shape,stride)   
+function res = DepthwiseConvTensor(im,ker,t,f,im_d,multiplier,channel_size,out_size,window_shape,stride)
+%   Get element position of input feature map.
     tmp1 = GetElemPos(im_d,channel_size,out_size,window_shape,stride);
-    
+
+%   Reshape kernel and input feature map into im2col cell
     ker_mat = reshape(permute(ker,[1,2,4,3]),[prod(window_shape)*im_d,multiplier])';
     ker_cell = mat2cell(ker_mat,[multiplier],prod(window_shape)*ones(1,im_d));
-    
     im_cell = mat2cell(reshape(im(tmp1),prod(window_shape),[]),[prod(window_shape)],[prod(out_size)*ones(1,im_d)]);
+
+%   Calculate Conv2d result by GEMM (General Matrix Multiplication)
     res_cell = cellfun(@mtimes,ker_cell,im_cell,'UniformOutput',false);
-    
+
+%   Reshape result cell into tensor format to match the output shape
     res = fi(zeros([out_size,im_d*multiplier]),t,f);
     for i=1:im_d
         res(:,:,1+(i-1)*multiplier:i*multiplier)=reshape(res_cell{i}',[out_size,multiplier]);
