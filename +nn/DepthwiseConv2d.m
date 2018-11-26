@@ -1,6 +1,10 @@
 % Author: Zhao Mingxin
 % Date:   2018/11/25
 % Description: as below
+%{
+    NOTE: DepthwiseConv2d don't support stride x ~= stride y for now as
+    Tensorflow do.
+%}
 
 function res = DepthwiseConv2d(im,ker,t,f,stride,padding_method)
     [im_h,im_w,im_d]=size(im);
@@ -26,7 +30,6 @@ function res = DepthwiseConvTensor(im,ker,t,f,im_d,multiplier,channel_size,out_s
 
 %   Reshape kernel and input feature map into im2col cell
     ker_mat = reshape(permute(ker,[1,2,4,3]),[prod(window_shape),im_d*multiplier])';
-%     ker_mat = reshape(permute(ker,[1,2,4,3]),[prod(window_shape)*im_d,multiplier])';
     ker_cell = mat2cell(ker_mat,ones(1,im_d)*multiplier,prod(window_shape));
     im_cell = mat2cell(reshape(im(im_pos),prod(window_shape),[]),[prod(window_shape)],[prod(out_size)*ones(1,im_d)]);
 

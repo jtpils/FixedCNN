@@ -34,3 +34,11 @@ recog_res.txt
 +nn/Unit-Test/test_data/Test-Data-for-Pooling/pool_w(5,3)_s(2,3)_avg_valid.csv
 +nn/Unit-Test/test_data/Test-Data-for-Pooling/pool_w(5,3)_s(2,3)_max_valid.csv
 +nn/Unit-Test/test_data/Test-Data-for-Pooling/pool_w(572,3)_s(2,3)_max_valid.csv
++nn/Unit-Test/test_data/Test-Data-for-Conv2d-DpthConv2d/conv-k23-s33-same-0.csv
++nn/Unit-Test/test_data/Test-Data-for-Conv2d-DpthConv2d/conv-k23-s33-same-1.csv
++nn/Unit-Test/test_data/Test-Data-for-Conv2d-DpthConv2d/conv-k23-s77-same-0.csv
++nn/Unit-Test/test_data/Test-Data-for-Conv2d-DpthConv2d/conv-k23-s77-same-1.csv
++nn/Unit-Test/test_data/Test-Data-for-Conv2d-DpthConv2d/conv-k23-s77-valid-0.csv
++nn/Unit-Test/test_data/Test-Data-for-Conv2d-DpthConv2d/conv-k23-s77-valid-1.csv
++nn/Unit-Test/test_data/Test-Data-for-Conv2d-DpthConv2d/conv-k23-s78-same-0.csv
++nn/Unit-Test/test_data/Test-Data-for-Conv2d-DpthConv2d/conv-k23-s78-same-1.csv
