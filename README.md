@@ -18,7 +18,7 @@ Several fundamental functions have been completed and carried on in a parallel w
 
 ##### ** Pointwise Conv2d can be implemented by Conv2d, but it will take a lot of operations to reordering elements by doing this through Conv2d. So I'm trying to find a more efficient way to directly apply Pointwise Conv2d. 
 
-#### Some Details
+### Details
 
 - The parallelism level (PL) of the source code is from vector to tensor. The definition of different levels is as below:
   - L1 Vector: 1×N array
