@@ -1,6 +1,6 @@
-### Fixed-point Convolutional Neural Networks Simulation Library in MATLAB
+### Fast CPU-based Multicore Parallel Fixed-point Convolutional Neural Networks Simulation Library
 
-The motivation for this project is creating a general library which can simulate a CNN with fixed-point operations. Since python is poor in fixed-point calculation support, I try to write the project in MATLAB thoroughly. While the fi object in MATLAB can conviniently express fixed-point(FP) operations, there are still many functions in MATLAB that don't support fi. So I have to rewrite a lot of basic functions such as conv2d etc step by step.
+The motivation for this project is creating a general library which can simulate a CNN with fixed-point operations fast. Since **Python** is poor in fixed-point calculation support, I try to write the project in MATLAB thoroughly. While the fi object in MATLAB can conviniently express fixed-point(FP) operations, there are still many functions in MATLAB that don't support fi. So I have to rewrite a lot of basic functions such as conv2d etc step by step.
 
 ### Project Progress
 Several fundamental functions have been completed and carried on in a parallel way as possible. The comprehensive review of all functions as below:
@@ -30,7 +30,7 @@ Several fundamental functions have been completed and carried on in a parallel w
 - Conv2d calculates 2d convolution of the input tensor, PL is L3, the input and output format are TF-compatible.
 - Pooling calculates 2d pooling of the input tensor, PL is L3, while pooling function doesn't support 3d pooling like TF.
 - Up to present, a standard ConvNet like MobileNet without ResBlock can run on this library. The MobileNet which has 28 layers with depthwise and pointwise convolution consumes about 3~5 minutes to forward once on a 224×224×3 input image @Intel Core i5-8400 CPU with 16.0 GB RAM.
-- NOTE: If your MATLAB support parallel computing with **Parallel Computation Toolbox (PCT)**, the algorithm will become faster. According to my test, MobileNet will save about 65% time of non-parallel version, which means it takes 70 seconds to forward total 28 layers once. The more cores you have on your PC, the faster it runs.
+- NOTE: If your MATLAB support parallel computing with **Parallel Computation Toolbox (PCT)**, the algorithm will become faster. According to my test, MobileNet will save about 65% time of non-parallel version, which means it takes 70 seconds to forward total 28 layers once. More cores you have on your PC, faster it runs.
 
 ### Requirement
 
