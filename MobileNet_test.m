@@ -22,69 +22,106 @@ roundm = 'floor';
 % MobileNet Begin
 profile on
 
+tic
 % Layer 1
 net = nn.Conv2d(fi(randi(64,224,224,3),t,f),fi(randi(64,3,3,3,32),t,f),t,f,[2,2],'SAME');
 net = nn.AddBias(net,fi(randi(64,1,32)),t,f);
 net = nn.ReLU(net);
+
+t1 = toc;
+fprintf('Layer %d completed in %fs ... \n',1,t1);
 % Layer 2
 net = nn.DepthwiseConv2d(net,fi(randi(64,3,3,32,1)),t,f,[1,1],'SAME');
- 
+
+t2 = toc;
+fprintf('Layer %d completed in %fs ... \n',2,t2-t1);
 % Layer 3
 net = nn.Conv2d(net,fi(randi(64,1,1,32,64),t,f),t,f,[1,1],'SAME');
 
+t3 = toc;
+fprintf('Layer %d completed in %fs ... \n',3,t3-t2);
 % Layer 4
 net = nn.DepthwiseConv2d(net,fi(randi(64,3,3,64,1)),t,f,[2,2],'SAME');
 
+t4 = toc;
+fprintf('Layer %d completed in %fs ... \n',4,t4-t3);
 % Layer 5
 net = nn.Conv2d(net,fi(randi(64,1,1,64,128),t,f),t,f,[1,1],'SAME');
 
+t5 = toc;
+fprintf('Layer %d completed in %fs ... \n',5,t5-t4);
 % Layer 6
 net = nn.DepthwiseConv2d(net,fi(randi(64,3,3,128,1)),t,f,[1,1],'SAME');
 
+t6 = toc;
+fprintf('Layer %d completed in %fs ... \n',6,t6-t5);
 % Layer 7
 net = nn.Conv2d(net,fi(randi(64,1,1,128,128),t,f),t,f,[1,1],'SAME');
 
+t7 = toc;
+fprintf('Layer %d completed in %fs ... \n',7,t7-t6);
 % Layer 8
 net = nn.DepthwiseConv2d(net,fi(randi(64,3,3,128,1)),t,f,[2,2],'SAME');
 
+t8 = toc;
+fprintf('Layer %d completed in %fs ... \n',8,t8-t7);
 % Layer 9
 net = nn.Conv2d(net,fi(randi(64,1,1,128,256),t,f),t,f,[1,1],'SAME');
 
+t9 = toc;
+fprintf('Layer %d completed in %fs ... \n',9,t9-t8);
 % Layer 10
 net = nn.DepthwiseConv2d(net,fi(randi(64,3,3,256,1)),t,f,[1,1],'SAME');
- 
+t10 = toc;
+fprintf('Layer %d completed in %fs ... \n',10,t10-t9);
 % Layer 11
 net = nn.Conv2d(net,fi(randi(64,1,1,256,256),t,f),t,f,[1,1],'SAME');
-
+t11 = toc;
+fprintf('Layer %d completed in %fs ... \n',11,t11-t10);
 % Layer 12
 net = nn.DepthwiseConv2d(net,fi(randi(64,3,3,256,1)),t,f,[2,2],'SAME');
-
+t12 = toc;
+fprintf('Layer %d completed in %fs ... \n',12,t12-t11);
 % Layer 13
 net = nn.Conv2d(net,fi(randi(64,1,1,256,512),t,f),t,f,[1,1],'SAME');
-
+t13 = toc;
+fprintf('Layer %d completed in %fs ... \n',13,t13-t12);
 % Layer 14~23
+tb=t13;
 for i=1:5
     net = nn.DepthwiseConv2d(net,fi(randi(64,3,3,512,1)),t,f,[1,1],'SAME');
+    ta = toc;
+    fprintf('Layer %d completed in %fs ... \n',2*(i-1)+14,ta-tb);
+    
     net = nn.Conv2d(net,fi(randi(64,1,1,512,512),t,f),t,f,[1,1],'SAME');
+    tb = toc;
+    fprintf('Layer %d completed in %fs ... \n',2*(i-1)+15,tb-ta);
 end
 
 % Layer 24
 net = nn.DepthwiseConv2d(net,fi(randi(64,3,3,512,1)),t,f,[2,2],'SAME');
-
+t24 = toc;
+fprintf('Layer %d completed in %fs ... \n',24,t24-tb);
 % Layer 25
 net = nn.Conv2d(net,fi(randi(64,1,1,512,1024),t,f),t,f,[1,1],'SAME');
-
+t25 = toc;
+fprintf('Layer %d completed in %fs ... \n',25,t25-t24);
 % Layer 26
 net = nn.DepthwiseConv2d(net,fi(randi(64,3,3,1024,1)),t,f,[1,1],'SAME');
-
+t26 = toc;
+fprintf('Layer %d completed in %fs ... \n',26,t26-t25);
 % Layer 27
 net = nn.Conv2d(net,fi(randi(64,1,1,1024,1024),t,f),t,f,[1,1],'SAME');
-
+t27 = toc;
+fprintf('Layer %d completed in %fs ... \n',27,t27-t26);
 % Layer 28
 net = nn.Pooling(net,t,f,[7,7],'AVG',[1,1],'VALID');
-
+t28 = toc;
+fprintf('Layer %d completed in %fs ... \n',28,t28-t27);
 % Layer Ouput
 net = reshape(net,[],1024);
 out = net*fi(randi(64,1024,1000),t,f);
+tot = toc;
+fprintf('Layer %s completed in %fs ... \n','Output',tot-t28);
 % MobileNet End
 profile viewer
