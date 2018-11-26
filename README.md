@@ -1,4 +1,4 @@
-### Fast CPU-based Multicore Parallel Fixed-point Convolutional Neural Networks Simulation Library
+### Fast CPU-based Multicore Parallel Fixed-point CNN Simulation Library
 
 The motivation for this project is creating a general library which can simulate a CNN with fixed-point operations fast. Since **Python** is poor in fixed-point calculation support, I try to write the project in MATLAB thoroughly. While the fi object in MATLAB can conviniently express fixed-point(FP) operations, there are still many functions in MATLAB that don't support fi. So I have to rewrite a lot of basic functions such as conv2d etc step by step.
 
