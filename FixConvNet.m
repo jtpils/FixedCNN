@@ -14,7 +14,7 @@ for i = 1:cnn_layers
             net_layer.filters.RoundingMethod = rounding_method;
             net_layer.bias.RoundingMethod = rounding_method;
 % 			cnn_result.layers{i+1}.maps = AddBias(ConvLayer(map_layer.maps, net_layer.filters,t,f),net_layer.bias,t,f);
-            cnn_result.layers{i+1}.maps = AddBias(Conv2d(map_layer.maps, net_layer.filters,t,f,[1,1],'SAME'),net_layer.bias,t,f);
+            cnn_result.layers{i+1}.maps = nn.AddBias(nn.Conv2d(map_layer.maps, net_layer.filters,t,f,[1,1],'SAME'),net_layer.bias,t,f);
 		case 'pool'
             poolstride = net_layer.stride*ones(1,2);
             method = upper(net_layer.method);
@@ -23,9 +23,9 @@ for i = 1:cnn_layers
             else
                 pad_method = 'VALID';
             end
-			cnn_result.layers{i+1}.maps = Pooling(map_layer.maps,t,f,net_layer.pool ,method,poolstride,pad_method); % Pooling(im,t,f,poolsize,pool_type,poolstride,pad_method)
+			cnn_result.layers{i+1}.maps = nn.Pooling(map_layer.maps,t,f,net_layer.pool ,method,poolstride,pad_method); % Pooling(im,t,f,poolsize,pool_type,poolstride,pad_method)
 		case 'relu'
-			cnn_result.layers{i+1}.maps = ReLU(map_layer.maps);
+			cnn_result.layers{i+1}.maps = nn.ReLU(map_layer.maps);
 		case 'softmaxloss'
 			disp('softmaxloss layer');
 		case 'softmax'
