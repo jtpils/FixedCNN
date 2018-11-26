@@ -124,4 +124,5 @@ out = net*fi(randi(64,1024,1000),t,f);
 tot = toc;
 fprintf('Layer %s completed in %fs ... \n','Output',tot-t28);
 % MobileNet End
+
 profile viewer

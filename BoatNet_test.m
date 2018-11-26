@@ -1,4 +1,3 @@
-clc;
 var_list = {'t','f','wordlen','fraclen','roundm','img','cnn_par','net','layer_res'};
 clear(var_list{:});
 wordlen =64;

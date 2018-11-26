@@ -16,24 +16,21 @@ function res = PointwiseConv2d(im,ker,t,f)
     im_mat = reshape(im,[im_h*im_w,im_d])';
     ker_mat = reshape(ker,[k_in,k_out])';
     
-    tmp = ker_mat*im_mat;
-    res = reshape(tmp',[im_h,im_w,k_out]);
+    p = gcp('nocreate'); 
+    if isempty(p)
+        n = 0;
+    else
+        n = p.NumWorkers;
+    end
+    ker_h = ceil(k_out/n);
+    
+    ker_block = mat2cell(ker_mat,[ker_h*ones(1,n-1),k_out-ker_h*(n-1)],[k_in]);
+    spmd
+ %       tmp = ker_mat((labindex-1)*ker_h+1:labindex*ker_h,:)*im_mat;
+        tmp = ker_block{labindex}*im_mat;
+    end
+    
+    tmp2 = [tmp{1};tmp{2};tmp{3};tmp{4};tmp{5};tmp{6}];
+    
+    res = reshape(tmp2',[im_h,im_w,k_out]);
 end
-
-% function res = PointwiseConv2d(im,ker,t,f)
-%     [im_h,im_w,im_d] = size(im);
-%     [k_h,k_w,k_in,k_out] = size(ker);
-%     
-%     res = fi(zeros(im_h,im_w,k_out),t,f);
-%     for i=1:k_out
-%         for j=1:im_d
-%             res(:,:,i)=res(:,:,i)+squeeze(ker(:,:,j,i));
-%         end
-%     end
-%     
-%     im_mat = reshape(im,[im_h*im_w,im_d])';
-%     ker_mat = reshape(ker,[k_in,k_out])';
-%     
-%     tmp = ker_mat*im_mat;
-%     res = reshape(tmp',[im_h,im_w,k_out]);
-% end
