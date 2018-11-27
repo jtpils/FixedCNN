@@ -32,7 +32,10 @@ Several fundamental functions have been completed and carried on in a parallel w
 - Up to present, a standard ConvNet like MobileNet without ResBlock can run on this library. The MobileNet which has 28 layers with depthwise and pointwise convolution consumes about 3~5 minutes to forward once on a 224×224×3 input image @Intel Core i5-8400 CPU with 16.0 GB RAM.
 - NOTE: If your MATLAB support parallel computing with **Parallel Computation Toolbox (PCT)**, the algorithm will become faster. According to my test, MobileNet will save about 65% time of non-parallel version, which means it takes 70 seconds to forward total 28 layers once. More cores you have on your PC, faster it runs.
 - The acceleration mainly due to the **im2col-reshape-GEMM-reshape-output** procedure as below:
-<img src="https://github.com/JackGittes/FixedCNN/blob/master/Doc/img/details.png" width=700>
+
+<center>
+<img src="https://github.com/JackGittes/FixedCNN/blob/master/Doc/img/details.png" width=900>
+</center>
 
 ### Requirement
 
