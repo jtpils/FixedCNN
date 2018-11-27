@@ -116,11 +116,11 @@ net = nn.Conv2d(net,fi(randi(64,1,1,1024,1024),t,f),t,f,[1,1],'SAME');
 t27 = toc;
 fprintf('Layer %d completed in %fs ... \n',27,t27-t26);
 % Layer 28
-net = nn.Pooling(net,t,f,[7,7],'AVG',[1,1],'VALID');
+net28 = nn.Pooling(net,t,f,[7,7],'AVG',[1,1],'VALID');
 t28 = toc;
 fprintf('Layer %d completed in %fs ... \n',28,t28-t27);
 % Layer Ouput
-net = reshape(net,[],1024);
+net = reshape(net28,[],1024);
 out = net*fi(randi(64,1024,1000),t,f);
 tot = toc;
 fprintf('Layer %s completed in %fs ... \n','Output',tot-t28);

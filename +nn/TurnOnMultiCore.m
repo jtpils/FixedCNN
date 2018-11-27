@@ -1,6 +1,6 @@
 % Author: Zhao Mingxin
 % Date:   2018/11/27
-% Description: Get current workers number.
+% Description: Turn on MultiCore mode. If fails, it will return 0.
 
 function res = TurnOnMultiCore()
     num_core = GetCurrentCore();
@@ -12,7 +12,7 @@ function res = TurnOnMultiCore()
             res = 0;
         end
     else
-        disp('Multicore mode is already on');
+        fprintf(2,'MultiCore mode is already ON.\n');
         res = 1;
     end
 end

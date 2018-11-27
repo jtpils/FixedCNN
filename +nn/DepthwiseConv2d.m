@@ -5,7 +5,7 @@
     NOTE: DepthwiseConv2d don't support stride x ~= stride y for now as
     Tensorflow do.
     If the MultiCore mode is on, this function can get about 2 times
-    speedup on 6 Cores Intel Core i5-8400.
+    speedup on 6 Cores Intel Core i5-8400 CPU.
 %}
 
 function res = DepthwiseConv2d(im,ker,t,f,stride,padding_method)
@@ -51,8 +51,8 @@ function res = DepthwiseConvTensor(im,ker,t,f,im_d,multiplier,channel_size,out_s
         im_mat_sp = size(im_mat);
         im_blk_len = im_mat_sp(2)/im_d;
         parfor i=1:im_d
-            ker_blk = ker_mat((i-1)*multiplier+1:i*multiplier,prod(window_shape));
-            im_blk = im_mat(prod(window_shape),(i-1)*im_blk_len+1:i*im_blk_len);
+            ker_blk = ker_mat((i-1)*multiplier+1:i*multiplier,:);
+            im_blk = im_mat(:,(i-1)*im_blk_len+1:i*im_blk_len);
             res_cell{i}= ker_blk*im_blk;
         end
     else

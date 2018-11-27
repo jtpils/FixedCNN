@@ -1,7 +1,7 @@
 var_list = {'t','f','wordlen','fraclen','roundm','img','cnn_par','net','layer_res'};
 clear(var_list{:});
-wordlen =64;
-fraclen =32;
+wordlen =16;
+fraclen =8;
 f = fimath('CastBeforeSum',0, 'OverflowMode', 'Saturate', 'RoundMode', 'floor', ... 
 'ProductMode', 'SpecifyPrecision', 'SumMode', 'SpecifyPrecision', 'ProductWordLength',2*wordlen, ...
 'ProductFractionLength',2*fraclen, 'SumWordLength', wordlen, 'SumFractionLength', fraclen);
@@ -18,7 +18,7 @@ fileID = fopen(resfile,'w');
 names = {"ship", "land", "sea"};
 
 profile on
-for i=1:30
+for i=1:50
     layer_res = BoatNet(img,net,t,f,roundm);
     [val,label] = max(layer_res.layers{12}.maps,[],3);
     fprintf(fileID,'%s\n',names{label});
