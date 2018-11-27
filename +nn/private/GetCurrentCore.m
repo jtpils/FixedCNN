@@ -1,5 +1,5 @@
 % Author: Zhao Mingxin
-% Date:   2018/11/25
+% Date:   2018/11/27
 % Description: Get current workers number.
 
 function res = GetCurrentCore()
