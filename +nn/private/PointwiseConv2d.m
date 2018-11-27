@@ -7,6 +7,9 @@
     im2col to reorder image and multiplying image with filter value is
     more efficient. Thus, I try to write point-wise conv2d to deal with 1¡Á1
     filters.
+    TODO:
+        1. stride~=[1,1]
+        2. padding method support
 %}
 % 
 function res = PointwiseConv2d(im,ker,t,f)

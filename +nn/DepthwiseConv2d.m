@@ -36,11 +36,13 @@ function res = DepthwiseConvTensor(im,ker,t,f,im_d,multiplier,channel_size,out_s
 
 %   Calculate Conv2d result by GEMM (General Matrix Multiplication)
 %   If Multi-Core mode is on, it will calculate GEMM with parfor otherwise it will calculate by cellfun locally.
+%   TODO:
+%       Need to improve GEMM performance here.
     num_core = GetCurrentCore();
     cell_FLAG = 0;
     if  num_core>0 && cell_FLAG
         ker_cell = mat2cell(ker_mat,ones(1,im_d)*multiplier,prod(window_shape))';
-        im_cell = mat2cell(im_mat,[prod(window_shape)],[prod(out_size)*ones(1,im_d)]);
+        im_cell = mat2cell(im_mat,prod(window_shape),prod(out_size)*ones(1,im_d));
         
         res_cell = cell(1,im_d);
         parfor i=1:im_d
@@ -57,7 +59,7 @@ function res = DepthwiseConvTensor(im,ker,t,f,im_d,multiplier,channel_size,out_s
         end
     else
         ker_cell = mat2cell(ker_mat,ones(1,im_d)*multiplier,prod(window_shape))';
-        im_cell = mat2cell(im_mat,[prod(window_shape)],[prod(out_size)*ones(1,im_d)]);
+        im_cell = mat2cell(im_mat,prod(window_shape),prod(out_size)*ones(1,im_d));
         res_cell = cellfun(@mtimes,ker_cell,im_cell,'UniformOutput',false);
     end
 

@@ -18,7 +18,7 @@ fileID = fopen(resfile,'w');
 names = {"ship", "land", "sea"};
 
 profile on
-for i=1:50
+for i=1:15
     layer_res = BoatNet(img,net,t,f,roundm);
     [val,label] = max(layer_res.layers{12}.maps,[],3);
     fprintf(fileID,'%s\n',names{label});

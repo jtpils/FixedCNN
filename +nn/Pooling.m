@@ -21,7 +21,7 @@ function res = Pooling(im,t,f,window_shape,pool_type,stride,pad_method)
         case 7
             try
                 pool_func = func_reg(pool_type);
-            catch error_info
+            catch
                 error("Unsupported Pooling function");
             end
             res = PoolingByType(im,t,f,window_shape,stride,pad_method,str2func(pool_func));

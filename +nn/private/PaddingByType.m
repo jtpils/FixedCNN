@@ -19,7 +19,7 @@ function [res,out_size,new_channel_size] = PaddingByType(im,t,f,im_d,window_shap
         case 'SAME'
             out_size = ceil(channel_size./stride);
             
- % Padding pixel computed using Tensorflow method in tensorflow/core/kernels/ops_util.cc
+        % Padding pixel computed using Tensorflow method in tensorflow/core/kernels/ops_util.cc
             pad_needed = max((out_size-1).*stride + window_shape - channel_size,[0,0]);
             pad_top_left = floor(pad_needed/2);
  %          pad_bottom_right = pad_needed - pad_top_left;

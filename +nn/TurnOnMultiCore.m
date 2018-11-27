@@ -6,9 +6,14 @@ function res = TurnOnMultiCore()
     num_core = GetCurrentCore();
     if num_core == 0
         try
-            parpool
-        catch error
-            warning('Can''t turn on multicore mode on this machine');
+            parpool;
+            num_core = GetCurrentCore();
+            if num_core>0
+                fprintf(2,'Successfully Turn On MultiCore Mode.\n');
+                res = 1;
+            end
+        catch
+            warning('Can''t Turn On MultiCore Mode On This Machine');
             res = 0;
         end
     else
