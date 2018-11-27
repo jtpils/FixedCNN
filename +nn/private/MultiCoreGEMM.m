@@ -55,7 +55,7 @@ end
 % arranges rows of matrix to different workers to perform MultiCoreGEMM. The rules mainly due to
 % height of mat_a and width of mat_b. 
 
-% NOTE: Cannon Algorithms is the well-known GEMM parallel method while MATLAB don't support 
+% NOTE: Cannon Algorithms is the well-known GEMM parallel method while MATLAB does't support 
 % finely manipulate matrix between workers so I just adopt simple rules to schedule tasks.
 function  [cal_mode,row_per_wk] = TaskScheduler(n,ah,bw)
     RowSplit = @(row,n_wk) floor(row/n_wk)*ones(1,n_wk)+...
