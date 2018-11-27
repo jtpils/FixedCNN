@@ -30,12 +30,24 @@ function res = DepthwiseConvTensor(im,ker,t,f,im_d,multiplier,channel_size,out_s
 
 %   Reshape kernel and input feature map into im2col cell
     ker_mat = reshape(permute(ker,[1,2,4,3]),[prod(window_shape),im_d*multiplier])';
-    ker_cell = mat2cell(ker_mat,ones(1,im_d)*multiplier,prod(window_shape));
+    ker_cell = mat2cell(ker_mat,ones(1,im_d)*multiplier,prod(window_shape))';
     im_cell = mat2cell(reshape(im(im_pos),prod(window_shape),[]),[prod(window_shape)],[prod(out_size)*ones(1,im_d)]);
 
 %   Calculate Conv2d result by GEMM (General Matrix Multiplication)
-    res_cell = cellfun(@mtimes,ker_cell',im_cell,'UniformOutput',false);
 
+%   res_cell = cellfun(@MultiCoreGEMM,ker_cell,im_cell,'UniformOutput',false);
+
+%   If Multi-Core mode is on, it will calculate GEMM with parfor otherwise it will calculate by cellfun locally. 
+    num_core = GetCurrentCore();
+    if num_core>0
+        res_cell = cell(1,im_d);
+        parfor i=1:im_d
+            res_cell{i}=ker_cell{i}*im_cell{i};
+        end
+    else
+        res_cell = cellfun(@mtimes,ker_cell,im_cell,'UniformOutput',false);
+    end
+    
 %   Reshape result cell into tensor format to match the output shape
     res = fi(zeros([out_size,im_d*multiplier]),t,f);
     for i=1:im_d

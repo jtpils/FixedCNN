@@ -31,8 +31,9 @@ function res = Conv2dTensor(im,ker,im_d,k_out,channel_size,out_size,window_shape
     im_mat =  reshape(permute(im(tmp1),[2,1,3]),[prod(out_size),prod(window_shape)*im_d])';
   
 %   Calculate Conv2d result by GEMM (General Matrix Multiplication)
-    conv_tmp = ker_mat*im_mat;
+%    conv_tmp = ker_mat*im_mat;
 
+    conv_tmp = MultiCoreGEMM(ker_mat,im_mat);
 %   Reshape result matrix into tensor format to match the output shape  
     res = permute(reshape(conv_tmp',[fliplr(out_size),k_out]),[2,1,3]);
 end
