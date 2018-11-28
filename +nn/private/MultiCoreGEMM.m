@@ -24,6 +24,7 @@ function res = MultiCoreGEMM(mat_a,mat_b)
                     tmp_res = a_blk{labindex}*mat_b;
                 end
                 res = repmat(mat_a(1),[ah,bw]);
+           % TODO: Reduce reshape time
                 rowStart = 1;
                 for i = 1:length(row_per_wk~=0)
                     res(rowStart:rowStart+row_per_wk(i)-1,:)=tmp_res{i};
@@ -35,6 +36,7 @@ function res = MultiCoreGEMM(mat_a,mat_b)
                     tmp_res = mat_a*b_blk{labindex};
                 end
                 res = repmat(mat_a(1),[ah,bw]);
+           % TODO: Reduce reshape time
                 colStart = 1;
                 for i = 1:length(row_per_wk~=0)
                     res(:,colStart:colStart+row_per_wk(i)-1)=tmp_res{i};
