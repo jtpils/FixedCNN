@@ -51,7 +51,7 @@ end
 
 function res_cell = DepthwiseGEMM(ker_mat,im_mat,im_d,multiplier,out_size,window_shape)
     num_core = GetCurrentCore();
-    [cal_mode,row_per_wk] = TaskScheduler(num_core,multiplier,prod(window_shape),prod(out_size));
+    [cal_mode,~] = TaskScheduler(num_core,multiplier,prod(window_shape),prod(out_size));
     
     if num_core>0 && strcmp(cal_mode,'SingleCore')
         res_cell = cell(1,im_d);

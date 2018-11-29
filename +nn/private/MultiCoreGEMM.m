@@ -27,6 +27,8 @@ function res = MultiCoreGEMM(mat_a,mat_b)
     shape = [ah,aw,bw];
     n = GetCurrentCore();
     if n>0
+    % Now the TaskScheduler is simple but effective in most conditions. I
+    % will update its algorithm in the future.
         [cal_mode,row_per_wk] = TaskScheduler(n,ah,aw,bw);
         switch cal_mode
             case 'A_ROW'
@@ -49,6 +51,7 @@ function res = MultiCoreGEMM(mat_a,mat_b)
 end
 
 % shape=[ah,aw,bw]
+% RowBlockMM performs GEMM by dividing mat_a into blocks 
 function res = RowBlockMM(mat_a,mat_b,row_per_wk,shape)
     a_blk = mat2cell(mat_a,row_per_wk,shape(2));
     spmd
@@ -62,6 +65,7 @@ function res = RowBlockMM(mat_a,mat_b,row_per_wk,shape)
     end
 end
 
+% ColBlockMM performs GEMM by dividing mat_b into blocks
 function res = ColBlockMM(mat_a,mat_b,row_per_wk,shape)
     b_blk = mat2cell(mat_b,shape(2),row_per_wk);
     spmd
@@ -75,6 +79,8 @@ function res = ColBlockMM(mat_a,mat_b,row_per_wk,shape)
     end
 end
 
+% ColBlockMM performs GEMM by dividing mat_a and mat_b into blocks.It finally
+% gathers every block results from labs and adds them together.
 function res = BlockBlockMM(mat_a,mat_b,row_per_wk,shape)
     a_cell=mat2cell(mat_a,shape(1),row_per_wk);
     b_cell=mat2cell(mat_b,row_per_wk,shape(3));
