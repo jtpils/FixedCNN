@@ -38,7 +38,6 @@ function res = DepthwiseConvTensor(im,ker,t,f,im_d,multiplier,channel_size,out_s
 %   If Multi-Core mode is on, it will calculate GEMM with parfor otherwise it will calculate by cellfun locally.
 %   TODO:
 %       Need to improve GEMM performance here.
-
     res_cell = DepthwiseGEMM(ker_mat,im_mat,im_d,multiplier,out_size,window_shape);
 %   Reshape result cell into tensor format to match the output shape
     res = fi(zeros([out_size,im_d*multiplier]),t,f);
@@ -52,16 +51,9 @@ end
 
 function res_cell = DepthwiseGEMM(ker_mat,im_mat,im_d,multiplier,out_size,window_shape)
     num_core = GetCurrentCore();
-    cell_FLAG = 0;
-    if  num_core>0 && cell_FLAG
-        ker_cell = mat2cell(ker_mat,ones(1,im_d)*multiplier,prod(window_shape))';
-        im_cell = mat2cell(im_mat,prod(window_shape),prod(out_size)*ones(1,im_d));
-        
-        res_cell = cell(1,im_d);
-        parfor i=1:im_d
-            res_cell{i}=ker_cell{i}*im_cell{i};
-        end
-    elseif num_core>0 && ~cell_FLAG
+    [cal_mode,row_per_wk] = TaskScheduler(num_core,multiplier,prod(window_shape),prod(out_size));
+    
+    if num_core>0 && strcmp(cal_mode,'SingleCore')
         res_cell = cell(1,im_d);
         im_mat_sp = size(im_mat);
         im_blk_len = im_mat_sp(2)/im_d;
@@ -73,17 +65,13 @@ function res_cell = DepthwiseGEMM(ker_mat,im_mat,im_d,multiplier,out_size,window
     else
         ker_cell = mat2cell(ker_mat,ones(1,im_d)*multiplier,prod(window_shape))';
         im_cell = mat2cell(im_mat,prod(window_shape),prod(out_size)*ones(1,im_d));
-        res_cell = cellfun(@fimtimes,ker_cell,im_cell,'UniformOutput',false);
+        if num_core>0 && ~strcmp(cal_mode,'SingleCore')
+            res_cell = cell(1,im_d);
+            for i=1:im_d
+                res_cell{i}=MultiCoreGEMM(ker_cell{i},im_cell{i});
+            end
+        else
+            res_cell = cellfun(@fimtimes,ker_cell,im_cell,'UniformOutput',false);
+        end
     end
-
-%         ker_cell = mat2cell(ker_mat,ones(1,im_d)*multiplier,prod(window_shape))';
-%         im_cell = mat2cell(im_mat,prod(window_shape),prod(out_size)*ones(1,im_d));
-%         for i=1:im_d
-%             par_res(i)= parfeval(@fimtimes,1,ker_cell{i},im_cell{i});
-%         end
-%         res_cell = cell(1,im_d);
-%         for i=1:im_d
-%             [Idx,value]=fetchNext(par_res);
-%             res_cell{Idx}=value;
-%         end
 end

@@ -7,7 +7,7 @@
     multiplication will suffer from communication delay between different cores 
     so that the time becomes longer than ordinary MM inevitablely.
 
-    Upadate:2018/11/29: Add matrix shape judge function. Now the
+    Upadate 2018/11/29: Add matrix shape judge function. Now the
     MultiCoreGEMM can automatically choose single-core and multi-core mode
     to perform GEMM according to the shape of input matrix. 
     
@@ -45,44 +45,6 @@ function res = MultiCoreGEMM(mat_a,mat_b)
         warning_info =['Multi-Core Mode GEMM is OFF, maybe something wrong with PCT config. ' ...
               'GEMM core will continue to run on Single-Core Mode without acceleration benefit.'];
         warning(warning_info);
-    end
-end
-
-% TaskScheduler accepts [worker numbers n, mat_a and mat_b shape] and 
-% arranges rows of matrix to different workers to perform MultiCoreGEMM. The rules mainly due to
-% height of mat_a and width of mat_b. 
-
-% NOTE: Cannon Algorithm is the well-known GEMM parallel method while MATLAB does't support 
-% finely manipulate matrix between workers so I just adopt simple rules to schedule tasks.
-
-% TODO: deal with aw>>ah condition
-
-function  [cal_mode,row_per_wk] = TaskScheduler(n,ah,aw,bw)
-    SplitFunc = @(row,n_wk) floor(row/n_wk)*ones(1,n_wk)+...
-        [ones(1,mod(row,n_wk)),zeros(1,n_wk-mod(row,n_wk))];
-
-    sp = [ah,bw];
-    ubl_ft =  ceil(sp/n)./(sp/n)-1;
-    
-    LargeThresh = 128*128*128;
-    alpha = 100;
-    if LargeThresh - ah*aw*bw>0
-        row_per_wk = zeros(1,n);
-        cal_mode = 'SingleCore';
-    elseif aw>alpha*ah && aw>alpha*bw
-        row_per_wk = SplitFunc(aw,n);
-        cal_mode = 'A_B_BLK';
-    else
-        if ubl_ft(1)<ubl_ft(2)
-            row_per_wk = SplitFunc(ah,n);
-            cal_mode = 'A_ROW';
-        elseif ubl_ft(1)>=ubl_ft(2)
-            row_per_wk = SplitFunc(bw,n);
-            cal_mode = 'B_COL';
-        else
-            row_per_wk = zeros(1,n);
-            cal_mode = 'Unknown';
-        end
     end
 end
 
