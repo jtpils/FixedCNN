@@ -66,7 +66,7 @@ function res = DepthwiseConvTensor(im,ker,t,f,im_d,multiplier,channel_size,out_s
 %         ker_cell = mat2cell(ker_mat,ones(1,im_d)*multiplier,prod(window_shape))';
 %         im_cell = mat2cell(im_mat,prod(window_shape),prod(out_size)*ones(1,im_d));
 %         for i=1:im_d
-%             par_res(i) = parfeval(@fimtimes,1,ker_cell{i},im_cell{i});
+%             par_res(i)= parfeval(@fimtimes,1,ker_mat((i-1)*multiplier+1:i*multiplier,:),im_mat(:,(i-1)*im_blk_len+1:i*im_blk_len));
 %         end
 %         res_cell = cell(1,im_d);
 %         for i=1:im_d
