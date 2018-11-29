@@ -38,6 +38,19 @@ function res = DepthwiseConvTensor(im,ker,t,f,im_d,multiplier,channel_size,out_s
 %   If Multi-Core mode is on, it will calculate GEMM with parfor otherwise it will calculate by cellfun locally.
 %   TODO:
 %       Need to improve GEMM performance here.
+
+    res_cell = DepthwiseGEMM(ker_mat,im_mat,im_d,multiplier,out_size,window_shape);
+%   Reshape result cell into tensor format to match the output shape
+    res = fi(zeros([out_size,im_d*multiplier]),t,f);
+
+%   TODO: improve reshape operation.
+    for i=1:im_d
+        ch_res = permute(reshape(res_cell{i}',[fliplr(out_size),multiplier]),[2,1,3]);
+        res(:,:,1+(i-1)*multiplier:i*multiplier)=ch_res;
+    end
+end
+
+function res_cell = DepthwiseGEMM(ker_mat,im_mat,im_d,multiplier,out_size,window_shape)
     num_core = GetCurrentCore();
     cell_FLAG = 0;
     if  num_core>0 && cell_FLAG
@@ -60,26 +73,17 @@ function res = DepthwiseConvTensor(im,ker,t,f,im_d,multiplier,channel_size,out_s
     else
         ker_cell = mat2cell(ker_mat,ones(1,im_d)*multiplier,prod(window_shape))';
         im_cell = mat2cell(im_mat,prod(window_shape),prod(out_size)*ones(1,im_d));
-        res_cell = cellfun(@mtimes,ker_cell,im_cell,'UniformOutput',false);
+        res_cell = cellfun(@fimtimes,ker_cell,im_cell,'UniformOutput',false);
     end
-%         
+
 %         ker_cell = mat2cell(ker_mat,ones(1,im_d)*multiplier,prod(window_shape))';
 %         im_cell = mat2cell(im_mat,prod(window_shape),prod(out_size)*ones(1,im_d));
 %         for i=1:im_d
-%             par_res(i)= parfeval(@fimtimes,1,ker_mat((i-1)*multiplier+1:i*multiplier,:),im_mat(:,(i-1)*im_blk_len+1:i*im_blk_len));
+%             par_res(i)= parfeval(@fimtimes,1,ker_cell{i},im_cell{i});
 %         end
 %         res_cell = cell(1,im_d);
 %         for i=1:im_d
 %             [Idx,value]=fetchNext(par_res);
 %             res_cell{Idx}=value;
 %         end
-
-%   Reshape result cell into tensor format to match the output shape
-    res = fi(zeros([out_size,im_d*multiplier]),t,f);
-
-%   TODO: improve reshape operation.
-    for i=1:im_d
-        ch_res = permute(reshape(res_cell{i}',[fliplr(out_size),multiplier]),[2,1,3]);
-        res(:,:,1+(i-1)*multiplier:i*multiplier)=ch_res;
-    end
 end

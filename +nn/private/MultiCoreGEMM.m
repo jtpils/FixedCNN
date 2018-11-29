@@ -2,10 +2,20 @@
 % Date:   2018/11/27
 % Description: The core function for GEMM with MultiCore support.
 %{
-    NOTE: Up to now, the GEMM function will give obviously acceleration for
+    NOTE: Up to now(2018/11/27), the GEMM function will give obviously acceleration for
     LARGE matrix-matrix multiplication but mediate and small scale matrix-matrix 
     multiplication will suffer from communication delay between different cores 
     so that the time becomes longer than ordinary MM inevitablely.
+
+    Upadate:2018/11/29: Add matrix shape judge function. Now the
+    MultiCoreGEMM can automatically choose single-core and multi-core mode
+    to perform GEMM according to the shape of input matrix. 
+    
+    Update: I tested this module on different platforms including 4 cores
+    LAPTOP, 6 cores PC,12 cores Centos server and 40 cores ubuntu server
+    .The result shows that the MultiCoreGEMM can outperform default
+    single-core fimtimes when input matrix is very large and consume
+    nearly equal time to MATLAB default fitimes when matrix is small.
 %}
 
 function res = MultiCoreGEMM(mat_a,mat_b)
