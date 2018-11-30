@@ -35,7 +35,7 @@ Several fundamental functions have been completed and carried on in a parallel w
 - Conv2d calculates 2d convolution of the input tensor, PL is L3, the input and output format are TF-compatible.
 - Pooling calculates 2d pooling of the input tensor, PL is L3, while pooling function doesn't support 3d pooling like TF.
 - Up to present, a standard ConvNet like MobileNet without ResBlock can run on this library. The MobileNet which has 28 layers with depthwise and pointwise convolution consumes about 3~5 minutes to forward once on a 224×224×3 input image @Intel Core i5-8400 CPU with 16.0 GB RAM.
-- NOTE: If your MATLAB supports parallel computing with **Parallel Computating Toolbox (PCT)**, the algorithm will become faster. According to my test, Fully parallel MobileNet will save about 65% time of non-parallel version, which means it takes 70 seconds to forward total 28 layers once. More cores you have on your PC, faster it runs.
+- NOTE: If your MATLAB supports parallel computing with **Parallel Computing Toolbox (PCT)**, the algorithm will become faster. According to my test, fully parallel MobileNet will save about 65% time of non-parallel version, which means it takes 70 seconds to forward total 28 layers once. More cores you have on your PC, faster it runs.
 - The acceleration mainly benefits from the **Im2col - Reshape - GEMM - Reshape - Output** procedure as below:
 
 <center>
