@@ -19,7 +19,7 @@ Several fundamental functions have been completed and carried on in a parallel w
 
 </center>
 
-##### * Now you can use self-defined pooling function other than MAX/AVG. Before applying customed pooling function, you should add the function name and its definition in the Pool_Type register table.
+##### * Now you can use customed pooling function besides MAX/AVG. Before applying customed pooling function, you should add the function name and its definition in the Pool_Type register table.
 
 ##### ** Pointwise Conv2d can be implemented by Conv2d, but it will take a lot of operations to reordering elements by doing this through Conv2d. So I'm trying to find a more efficient way to directly apply Pointwise Conv2d. 
 
@@ -36,7 +36,7 @@ Several fundamental functions have been completed and carried on in a parallel w
 - Pooling calculates 2d pooling of the input tensor, PL is L3, while pooling function doesn't support 3d pooling like TF.
 - Up to present, a standard ConvNet like MobileNet without ResBlock can run on this library. The MobileNet which has 28 layers with depthwise and pointwise convolution consumes about 3~5 minutes to forward once on a 224×224×3 input image @Intel Core i5-8400 CPU with 16.0 GB RAM.
 - NOTE: If your MATLAB support parallel computing with **Parallel Computation Toolbox (PCT)**, the algorithm will become faster. According to my test, MobileNet will save about 65% time of non-parallel version, which means it takes 70 seconds to forward total 28 layers once. More cores you have on your PC, faster it runs.
-- The acceleration mainly due to the **Im2col - Reshape - GEMM - Reshape - Output** procedure as below:
+- The acceleration mainly benefits from the **Im2col - Reshape - GEMM - Reshape - Output** procedure as below:
 
 <center>
 <img src="http://wx1.sinaimg.cn/large/41f56ddcly1fxq2je7sidg21fm0c0aaa.gif" width="900px">
