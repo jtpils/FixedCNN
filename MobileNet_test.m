@@ -19,7 +19,7 @@ f = fimath('CastBeforeSum',0, 'OverflowMode', 'Saturate', 'RoundMode', 'floor', 
 t = numerictype('WordLength', wordlen, 'FractionLength',fraclen);
 roundm = 'floor';
 
-nn.TurnOnMultiCore();
+% nn.TurnOnMultiCore();
 % MobileNet Begin
 profile on
 
