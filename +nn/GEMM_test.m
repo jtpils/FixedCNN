@@ -40,7 +40,7 @@ for scale = 1:1
         fprintf('Default GEMM completed time is %f s\n',t3-t2);
         
         fprintf(2,'Time Delta is %f s\n',t3-t2+t0-t1);
-% 
+
 %         t4 = toc;
 %         res3 = COLsplGEMM(a,b);
 %         t5 = toc;

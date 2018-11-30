@@ -79,7 +79,7 @@ function res = ColBlockMM(mat_a,mat_b,row_per_wk,shape)
     end
 end
 
-% ColBlockMM performs GEMM by dividing mat_a and mat_b into blocks.It finally
+% BlockBlockMM performs GEMM by dividing mat_a and mat_b into blocks.It finally
 % gathers every block results from labs and adds them together.
 function res = BlockBlockMM(mat_a,mat_b,row_per_wk,shape)
     a_cell=mat2cell(mat_a,shape(1),row_per_wk);
@@ -92,3 +92,6 @@ function res = BlockBlockMM(mat_a,mat_b,row_per_wk,shape)
         res=res_tmp{i}+res;
     end
 end
+
+% Here is a additional function which is designed for large pool cluster
+% for example a serve has more than 128 cores. To be completed.
