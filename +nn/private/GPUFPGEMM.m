@@ -33,4 +33,3 @@ end
 function res = FXPGEMMonGPU(a,b,t,f)
 
 end
-
