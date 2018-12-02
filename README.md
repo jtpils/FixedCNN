@@ -53,3 +53,9 @@ All codes are tested in **MATLAB R2017b** and don't support GPU acceleration, wh
 - To enhance the library's robustness and compatibility, an elaborate and overall unit test module is under construsting which will check more complicated conditions in application scenarios.
 
 - I try my best to design every function to be similar to TensorFlow-style as possible so that people who are familiar with TensorFlow can easily tranfer to this library without much learning effort.
+
+- I'm considering to use GPU to accelerate fixed pointed simulation in the future and the basic idea is shown as below. 
+
+<center>
+<img src="http://wx4.sinaimg.cn/large/41f56ddcly1fxsgd1cqqxj26fx1jtqv5.jpg" width="900px">
+</center>
