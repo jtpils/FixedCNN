@@ -1,8 +1,8 @@
 wordlen =16;
 fraclen =8;
 f = fimath('CastBeforeSum',0, 'OverflowMode', 'Saturate', 'RoundMode', 'floor', ... 
-'ProductMode', 'SpecifyPrecision', 'SumMode', 'SpecifyPrecision', 'ProductWordLength',2*wordlen, ...
-'ProductFractionLength',2*fraclen, 'SumWordLength', wordlen, 'SumFractionLength', fraclen);
+'ProductMode', 'SpecifyPrecision', 'SumMode', 'SpecifyPrecision', 'ProductWordLength',wordlen, ...
+'ProductFractionLength',fraclen, 'SumWordLength', wordlen, 'SumFractionLength', fraclen);
 t = numerictype('WordLength', wordlen, 'FractionLength',fraclen);
 roundm = 'floor';
 
@@ -20,8 +20,9 @@ t2 = toc;
 fprintf('CPU GEMM time is %f s\n',t2-t1);
 
 t3 = toc;
-res_gpu = FXPGEMMonGPU(mat_a,mat_b);
+res_gpu = FXPGEMMon(mat_a,mat_b);
 t4 = toc;
 fprintf('GPU GEMM time is %f s\n',t4-t3);
 
-sum(sum(abs(single(res_cpu-res_gpu))))
+delta = res_cpu-res_gpu;
+sum(sum(abs(delta.data)))

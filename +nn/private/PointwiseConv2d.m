@@ -20,6 +20,7 @@ function res = PointwiseConv2d(im,ker,t,f)
     ker_mat = reshape(ker,[k_in,k_out]);
 
 %    res_mat = MultiCoreGEMM(im_mat,ker_mat);
-    res_mat = GPUFPGEMM(im_mat,ker_mat);
+%     res_mat = GPUFPGEMM(im_mat,ker_mat);
+    res_mat = FXPGEMMonGPU(im_mat,ker_mat);
     res = reshape(res_mat,[im_h,im_w,k_out]);
 end
