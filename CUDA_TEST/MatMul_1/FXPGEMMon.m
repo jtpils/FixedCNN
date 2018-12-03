@@ -9,7 +9,7 @@ function res = FXPGEMMonGPU(mat_a,mat_b)
     FracLen = t.FractionLength;
     WordLen = t.WordLength;
     
-    over_bound = 2^(2*WordLen-1);
+    over_bound = 2^(2*WordLen-2);
     
     [ah,aw]=size(mat_a);
     [bh,bw]=size(mat_b);
