@@ -41,6 +41,7 @@ function res = PoolingByType(im,t,f,window_shape,stride,pad_method,pool_func)
     [im,out_size,channel_size] = PaddingByType(im,t,f,im_d,window_shape,channel_size,stride,pad_method);
     
     res = PoolingTensor(im,im_d,channel_size,out_size,window_shape,stride,pool_func);
+    res = fi(res,t,f);
 end
 
 function res = PoolingTensor(im,im_d,channel_size,out_size,window_shape,stride,pool_func)

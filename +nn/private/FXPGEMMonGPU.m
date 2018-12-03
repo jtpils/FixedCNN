@@ -30,7 +30,7 @@ function res = FXPGEMMonGPU(mat_a,mat_b)
     b_pad(1:bh,1:bw)=single(mat_b.int);
     
     gpu_kernel = parallel.gpu.CUDAKernel('+nn/private/matmul.ptx','+nn/private/matmul.cu');
-    gpu_kernel.GridSize=[bw_n*blk_size/blk_size,ah_n*blk_size/blk_size,1];
+    gpu_kernel.GridSize=[bw_n,ah_n,1];
     gpu_kernel.ThreadBlockSize=[blk_size,blk_size,1];
     
     mat_c = single(zeros(ah_n*blk_size,bw_n*blk_size));
