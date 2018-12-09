@@ -9,7 +9,11 @@ function res = FXPGEMMonGPU(mat_a,mat_b)
     FracLen = t.FractionLength;
     WordLen = t.WordLength;
     
-    over_bound = 2^(WordLen-1);
+    if 2*WordLen<32
+        over_bound = 2^(f.ProductWordLength-1);
+    else
+        over_bound = 2^(23-1);
+    end
     
     [ah,aw]=size(mat_a);
     [bh,bw]=size(mat_b);
@@ -26,8 +30,11 @@ function res = FXPGEMMonGPU(mat_a,mat_b)
     a_pad = single(zeros(ah_n*blk_size,aw_n*blk_size));
     b_pad = single(zeros(bh_n*blk_size,bw_n*blk_size));
     
-    a_pad(1:ah,1:aw)=single(mat_a.int);
-    b_pad(1:bh,1:bw)=single(mat_b.int);
+    a_int = mat_a.data*(2^mat_a.FractionLength);
+    b_int = mat_b.data*(2^mat_b.FractionLength);
+    
+    a_pad(1:ah,1:aw)=single(a_int);
+    b_pad(1:bh,1:bw)=single(b_int);
     
     gpu_kernel = parallel.gpu.CUDAKernel('+nn/private/matmul.ptx','+nn/private/matmul.cu');
     gpu_kernel.GridSize=[bw_n,ah_n,1];

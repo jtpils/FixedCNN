@@ -23,8 +23,8 @@ function res = DepthwiseConv2d(im,ker,t,f,stride,padding_method)
     end
 
     [im,out_size,channel_size] = PaddingByType(im,t,f,im_d,window_shape,channel_size,stride,padding_method);
-%     res = DepthwiseConvTensor(im,ker,t,f,im_d,multiplier,channel_size,out_size,window_shape,stride);
-    res = DepthwiseGPU(im,ker,t,f,im_d,multiplier,channel_size,out_size,window_shape,stride);
+    res = DepthwiseConvTensor(im,ker,t,f,im_d,multiplier,channel_size,out_size,window_shape,stride);
+%     res = DepthwiseGPU(im,ker,t,f,im_d,multiplier,channel_size,out_size,window_shape,stride);
 end
 
 function res = DepthwiseConvTensor(im,ker,t,f,im_d,multiplier,channel_size,out_size,window_shape,stride)
@@ -89,7 +89,11 @@ function res = DepthwiseGPU(im,ker,t,f,im_d,multiplier,channel_size,out_size,win
     FracLen = t.FractionLength;
     WordLen = t.WordLength;
     
-    over_bound = 2^(WordLen-1);
+    if 2*WordLen<32
+        over_bound = 2^(f.ProductWordLength-1);
+    else
+        over_bound = 2^(23-1);
+    end
     
     im_in = reshape(im_mat,prod(window_shape),prod(out_size),im_d);
     ker_in = permute(reshape(ker_mat,prod(window_shape),multiplier,im_d),[2,1,3]);

@@ -15,7 +15,7 @@ wordlen =16;
 fraclen =8;
 f = fimath('CastBeforeSum',0, 'OverflowMode', 'Saturate', 'RoundMode', 'floor', ... 
 'ProductMode', 'SpecifyPrecision', 'SumMode', 'SpecifyPrecision', 'ProductWordLength',2*wordlen, ...
-'ProductFractionLength',2*fraclen, 'SumWordLength', wordlen, 'SumFractionLength', fraclen);
+'ProductFractionLength',2*fraclen, 'SumWordLength', 2*wordlen, 'SumFractionLength', 2*fraclen);
 t = numerictype('WordLength', wordlen, 'FractionLength',fraclen);
 roundm = 'floor';
 
@@ -155,7 +155,7 @@ net = nn.AddBias(net,fi(randi(64,1,1024)),t,f);
 net = nn.ReLU(net);
 t27 = toc;
 fprintf('Layer %d completed in %fs ... \n',27,t27-t26);
-% Layer 28
+% Layer 28+
 net = nn.Pooling(net,t,f,[7,7],'AVG',[1,1],'VALID');
 net = nn.AddBias(net,fi(randi(64,1,1024)),t,f);
 net = nn.ReLU(net);
