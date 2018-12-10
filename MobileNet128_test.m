@@ -2,26 +2,60 @@
 % Date:   2018/12/09
 % Description: 
 
-wordlen =20;
-fraclen =10;
+wordlen =16;
+fraclen =8;
 f = fimath('CastBeforeSum',0, 'OverflowMode', 'Saturate', 'RoundMode', 'floor', ... 
 'ProductMode', 'SpecifyPrecision', 'SumMode', 'SpecifyPrecision', 'ProductWordLength',2*wordlen, ...
 'ProductFractionLength',2*fraclen, 'SumWordLength', wordlen, 'SumFractionLength', fraclen);
 t = numerictype('WordLength', wordlen, 'FractionLength',fraclen);
 
-im = load('cat_test.mat');
-inputs = (double(im.cat_im)-128)*(1/256);
+labels = load('labels_1001.mat');
+lbs = labels.category;
+samples = load('samples.mat');
 
-net_par = getJSONParams('mobilenet_v1_1.0_128_quant.json');
+samp = samples.samples(6);
+
+img = samp.images{1,4};
+
+% img = imresize(img7,[128,128]);
+
+inputs = (double(img)-128)*(2/256);
+
+load_FLAG = 0;
+if load_FLAG
+    net_par = getJSONParams('mobilenet_v1_1.0_128_quant.json');
+end
 
 nn.TurnOnMultiCore();
-res = runNetWithJsonParams(net_par,inputs,t,f);
+tic
 
-[~,label] = max(res);
-fprintf(2,'Output Label:  %d\n',label);
+t_Start = toc;
+res = runNetWithJsonParams(net_par,inputs,t,f);
+t_End = toc;
+
+getTopKPred(res,5,lbs);
+
+fprintf(2,'True Category: %s \n',string(samp.category));
+
+fprintf('MobileNet-128-1.0 completed in %fs\n',t_End-t_Start);
 
 function res = getJSONParams(path)
-    fprintf(2,'Loading parameters from json file...\n');
+    fprintf(2,'Loading parameters from JSON file...\n');
     res = jsondecode(fileread(path));
-    fprintf(2,'Parameters loaded.\n');
+    fprintf(2,'Parameters Loaded.\n');
+end
+
+function res = getTopKPred(pred,k,lbs)
+    [~,idx] = sort(pred,'descend');
+    tmp = idx(1:k);
+    fprintf('Top-%d Labels: \n',k);
+    for i = 1:k
+        fprintf('%d  ',tmp(i));
+    end
+    fprintf('\n');
+    fprintf('Classification Results: \n');
+    for i = 1:k
+        fprintf('\t %s \n',string(lbs(tmp(i),:)));
+    end
+    res = tmp;
 end

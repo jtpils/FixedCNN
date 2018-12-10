@@ -32,7 +32,7 @@ function res = runNetWithJsonParams(par,inputs,t,f)
                 bias_fi = fi(bias_w,t,f);
                 net = nn.Conv2d(net,conv_fi,t,f,stride,padding);
                 net = nn.AddBias(net,bias_fi,t,f);
-                net = nn.ReLU(net);
+                net = nn.ReLU6(net);
             case 2
                 par_n = op_parse(i).inputs;
                 conv_op = op_parse(i).builtin_options;
@@ -53,7 +53,7 @@ function res = runNetWithJsonParams(par,inputs,t,f)
                 bias_fi = fi(bias_w,t,f);
                 net = nn.DepthwiseConv2d(net,conv_fi,t,f,stride,padding);
                 net = nn.AddBias(net,bias_fi,t,f);
-                net = nn.ReLU(net);
+                net = nn.ReLU6(net);
             case 3
                 fprintf(2,'Softmax Layer Detected.\n');
             case 4
