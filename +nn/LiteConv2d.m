@@ -23,7 +23,7 @@ function res = LiteConv2d(im,ker,z_im,z_ker,z_res,s1,s2,s3,ConvType,stride,paddi
     
     % OutputStage
     [mul,n] = getShiftBits(s1,s2,s3,16);
-    res = bitshift(conv_res*mul,-n)+ z_res;
+    res = bitshift(conv_res*mul,-n)+ fi(z_res,t,f);
     res = fi(res,0,8,0);
 end
 
