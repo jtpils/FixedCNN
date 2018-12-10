@@ -14,7 +14,7 @@
 % 
 function res = PointwiseConv2d(im,ker,t,f)
     [im_h,im_w,im_d] = size(im);
-    [k_h,k_w,k_in,k_out] = size(ker);
+    [~,~,k_in,k_out] = size(ker);
     
     im_mat = reshape(im,[im_h*im_w,im_d]);
     ker_mat = reshape(ker,[k_in,k_out]);

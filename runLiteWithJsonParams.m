@@ -2,10 +2,13 @@
 % Date:   2018/12/09
 % Description: 
 
-function res = runNetWithJsonParams(par,inputs,t,f)
+function res = runLiteWithJsonParams(par,inputs,t,f)
     op_parse = par.subgraphs.operators;
     tensor_list = par.subgraphs.tensors;
     tensor_buffer = par.buffers;
+    
+    input_node = par.subgraphs.inputs;
+    output_node = par.subgraphs.outputs;
     
     for i=1:length(op_parse)
         if i==1
@@ -13,47 +16,54 @@ function res = runNetWithJsonParams(par,inputs,t,f)
         end
         switch op_parse(i).opcode_index
             case 1
-                par_n = op_parse(i).inputs;
+                out_node = op_parse(i).outputs+1;
+                in_node = op_parse(i).inputs(1)+1;
+                weight_n = op_parse(i).inputs(2)+1;
+                bias_n = op_parse(i).inputs(3)+1;
+                
+                conv_w = tensor_buffer{tensor_list(weight_n).buffer+1,1}.data;
+                bias_w = tensor_buffer{tensor_list(bias_n).buffer+1,1}.data;
+                conv_w_tf = getTFStyleParams(conv_w,tensor_list(weight_n).shape,'Conv2d');
+                bias_w_tf = getBias(bias_w);
+                
+                s1 = tensor_list(in_node).quantization.scale;
+                s2 = tensor_list(weight_n).quantization.scale;
+                s3 = tensor_list(out_node).quantization.scale;
+                
+                z_im = tensor_list(in_node).quantization.zero_point;
+                z_ker = tensor_list(weight_n).quantization.zero_point;
+                z_res = tensor_list(out_node).quantization.zero_point;
+                
                 conv_op = op_parse(i).builtin_options;
                 stride = [conv_op.stride_h,conv_op.stride_w];
                 padding = conv_op.padding;
                 
-                weight_n = par_n(2)+1;
-                bias_n = par_n(3)+1;
-                conv_w = tensor_buffer{tensor_list(weight_n).buffer+1,1}.data;
-                bias_w = tensor_buffer{tensor_list(bias_n).buffer+1,1}.data;
-                
-                conv_w_tf = op.getTFStyleParams(conv_w,tensor_list(weight_n).shape,'Conv2d');
-                bias_w_tf = op.getTFStyleBias(bias_w);
-                conv_w = op.dequantParams(conv_w_tf,'Weight',tensor_list(weight_n).quantization);
-                bias_w = op.dequantParams(bias_w_tf,'Bias',tensor_list(bias_n).quantization);
-                
-                conv_fi = fi(conv_w,t,f);
-                bias_fi = fi(bias_w,t,f);
-                net = nn.Conv2d(net,conv_fi,t,f,stride,padding);
-                net = nn.AddBias(net,bias_fi,t,f);
-                net = nn.ReLU6(net);
+                net = nn.LiteConv2d(net,conv_w_tf,z_im,z_ker,z_res,s1,s2,s3,'Conv2d',stride,padding,bias_w_tf);
+
             case 2
-                par_n = op_parse(i).inputs;
-                conv_op = op_parse(i).builtin_options;
-                stride = [conv_op.stride_h,conv_op.stride_w];
-                padding = conv_op.padding;
+                out_node = op_parse(i).outputs+1;
+                in_node = op_parse(i).inputs(1)+1;
+                weight_n = op_parse(i).inputs(2)+1;
+                bias_n = op_parse(i).inputs(3)+1;
                 
-                weight_n = par_n(2)+1;
-                bias_n = par_n(3)+1;
                 conv_w = tensor_buffer{tensor_list(weight_n).buffer+1,1}.data;
                 bias_w = tensor_buffer{tensor_list(bias_n).buffer+1,1}.data;
-                
                 conv_w_tf = getTFStyleParams(conv_w,tensor_list(weight_n).shape,'DepthwiseConv2d');
                 bias_w_tf = getBias(bias_w);
-                conv_w = dequantParams(conv_w_tf,'Weight',tensor_list(weight_n).quantization);
-                bias_w = dequantParams(bias_w_tf,'Bias',tensor_list(bias_n).quantization);
                 
-                conv_fi = fi(conv_w,t,f);
-                bias_fi = fi(bias_w,t,f);
-                net = nn.DepthwiseConv2d(net,conv_fi,t,f,stride,padding);
-                net = nn.AddBias(net,bias_fi,t,f);
-                net = nn.ReLU6(net);
+                s1 = tensor_list(in_node).quantization.scale;
+                s2 = tensor_list(weight_n).quantization.scale;
+                s3 = tensor_list(out_node).quantization.scale;
+                
+                z_im = tensor_list(in_node).quantization.zero_point;
+                z_ker = tensor_list(weight_n).quantization.zero_point;
+                z_res = tensor_list(out_node).quantization.zero_point;
+                
+                conv_op = op_parse(i).builtin_options;
+                stride = [conv_op.stride_h,conv_op.stride_w];
+                padding = conv_op.padding;
+                
+                net = nn.LiteConv2d(net,conv_w_tf,z_im,z_ker,z_res,s1,s2,s3,'DepthwiseConv2d',stride,padding,bias_w_tf);
             case 3
                 fprintf(2,'Softmax Layer Detected.\n');
             case 4

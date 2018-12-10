@@ -13,24 +13,25 @@ labels = load('labels_1001.mat');
 lbs = labels.category;
 samples = load('samples.mat');
 
-samp = samples.samples(6);
+samp = samples.samples(3);
 
 img = samp.images{1,4};
 
 % img = imresize(img7,[128,128]);
 
-inputs = (double(img)-128)*(2/256);
+% inputs = (double(img)-128)*(2/256);
 
-load_FLAG = 0;
+load_FLAG = 1;
 if load_FLAG
     net_par = getJSONParams('mobilenet_v1_1.0_128_quant.json');
 end
 
-nn.TurnOnMultiCore();
+device.CPU.callMultiCore();
 tic
 
 t_Start = toc;
-res = runNetWithJsonParams(net_par,inputs,t,f);
+% res = runNetWithJsonParams(net_par,inputs,t,f);
+res = runLiteWithJsonParams(net_par,img,t,f);
 t_End = toc;
 
 getTopKPred(res,5,lbs);
