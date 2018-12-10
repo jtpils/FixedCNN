@@ -5,17 +5,17 @@
 wordlen =16;
 fraclen =8;
 f = fimath('CastBeforeSum',0, 'OverflowMode', 'Saturate', 'RoundMode', 'floor', ... 
-'ProductMode', 'SpecifyPrecision', 'SumMode', 'SpecifyPrecision', 'ProductWordLength',2*wordlen, ...
-'ProductFractionLength',2*fraclen, 'SumWordLength', wordlen, 'SumFractionLength', fraclen);
+'ProductMode', 'SpecifyPrecision', 'SumMode', 'SpecifyPrecision', 'ProductWordLength',wordlen, ...
+'ProductFractionLength',fraclen, 'SumWordLength', wordlen, 'SumFractionLength', fraclen);
 t = numerictype('WordLength', wordlen, 'FractionLength',fraclen);
 
 labels = load('labels_1001.mat');
 lbs = labels.category;
 samples = load('samples.mat');
 
-samp = samples.samples(3);
+samp = samples.samples(7);
 
-img = samp.images{1,4};
+img = samp.images{1,1};
 
 % img = imresize(img7,[128,128]);
 
