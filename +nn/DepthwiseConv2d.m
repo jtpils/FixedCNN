@@ -122,7 +122,7 @@ function res = DepthwiseGPU(im,ker,t,f,im_d,multiplier,channel_size,out_size,win
     
     res_tmp = reshape(permute(res_tmp,[2,1,3]),[out_size,multiplier,im_d]);
     res_tmp = permute(res_tmp,[1,2,4,3]);
-    res_tmp = reshape(res_tmp,[out_size,im_d*multiplier]);
+    res_tmp = permute(reshape(res_tmp,[fliplr(out_size),im_d*multiplier]),[2,1,3]);
 
     res = fi(res_tmp/2^(2*FracLen),t,f);
 end
