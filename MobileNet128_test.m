@@ -13,13 +13,9 @@ labels = load('labels_1001.mat');
 lbs = labels.category;
 samples = load('samples.mat');
 
-samp = samples.samples(7);
+samp = samples.samples(2);
 
-img = samp.images{1,1};
-
-% img = imresize(img7,[128,128]);
-
-% inputs = (double(img)-128)*(2/256);
+img = samp.images{1,3};
 
 load_FLAG = 1;
 if load_FLAG

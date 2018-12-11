@@ -2,7 +2,7 @@
 % Date:   2018/11/25
 % Description: as below
 %{
-    NOTE: DepthwiseConv2d don't support stride x ~= stride y for now as
+    NOTE: DepthwiseConv2d does't support stride x ~= stride y for now as
     Tensorflow do.
     If the MultiCore mode is on, this function can get about 2 times
     speedup on 6 Cores Intel Core i5-8400 CPU.
@@ -23,8 +23,8 @@ function res = DepthwiseConv2d(im,ker,t,f,stride,padding_method)
     end
 
     [im,out_size,channel_size] = PaddingByType(im,t,f,im_d,window_shape,channel_size,stride,padding_method);
-    res = DepthwiseConvTensor(im,ker,t,f,im_d,multiplier,channel_size,out_size,window_shape,stride);
-%     res = DepthwiseGPU(im,ker,t,f,im_d,multiplier,channel_size,out_size,window_shape,stride);
+%     res = DepthwiseConvTensor(im,ker,t,f,im_d,multiplier,channel_size,out_size,window_shape,stride);
+    res = DepthwiseGPU(im,ker,t,f,im_d,multiplier,channel_size,out_size,window_shape,stride);
 end
 
 function res = DepthwiseConvTensor(im,ker,t,f,im_d,multiplier,channel_size,out_size,window_shape,stride)
@@ -87,24 +87,24 @@ function res = DepthwiseGPU(im,ker,t,f,im_d,multiplier,channel_size,out_size,win
     
     blk_size = 16;
     FracLen = t.FractionLength;
-    WordLen = t.WordLength;
+%     WordLen = t.WordLength;
     
-    if 2*WordLen<32
-        over_bound = 2^(f.ProductWordLength-1);
-    else
-        over_bound = 2^(23-1);
-    end
+    CUDA_len = max([32,f.ProductWordLength]);
+    up_bound = 2^(CUDA_len-1)-1;
+    low_bound = -2^(CUDA_len-1);
     
     im_in = reshape(im_mat,prod(window_shape),prod(out_size),im_d);
     ker_in = permute(reshape(ker_mat,prod(window_shape),multiplier,im_d),[2,1,3]);
+    im_in = int32(im_in.data*2^(FracLen));
+    ker_in = int32(ker_in.data*2^(FracLen));
     
     ker_hn = ceil(multiplier/blk_size);
     ker_wn = ceil(prod(window_shape)/blk_size);
     im_hn = ceil(ker_wn/blk_size);
     im_wn = ceil(prod(out_size)/blk_size);
     
-    ker_pad = zeros(ker_hn*blk_size,ker_wn*blk_size,im_d);
-    im_pad = zeros(im_hn*blk_size,im_wn*blk_size,im_d);
+    ker_pad = int32(zeros(ker_hn*blk_size,ker_wn*blk_size,im_d));
+    im_pad = int32(zeros(im_hn*blk_size,im_wn*blk_size,im_d));
     
     ker_pad(1:multiplier,1:prod(window_shape),:)=ker_in;
     im_pad(1:prod(window_shape),1:prod(out_size),:)=im_in;
@@ -113,8 +113,9 @@ function res = DepthwiseGPU(im,ker,t,f,im_d,multiplier,channel_size,out_size,win
     gpu_kernel.GridSize=[ker_hn,im_wn,im_d];
     gpu_kernel.ThreadBlockSize=[blk_size,blk_size,1];
     
-    tmp = zeros(ker_hn*blk_size,im_wn*blk_size,im_d);
-    res_gpu = feval(gpu_kernel,ker_pad,im_pad,ker_hn*blk_size,ker_wn*blk_size,im_wn*blk_size,over_bound,tmp);
+    tmp = int32(zeros(ker_hn*blk_size,im_wn*blk_size,im_d));
+    res_gpu = feval(gpu_kernel,ker_pad,im_pad,ker_hn*blk_size,ker_wn*blk_size,im_wn*blk_size,up_bound ...
+        ,low_bound,tmp);
     
     res_cpu = gather(res_gpu);
     res_tmp = res_cpu(1:multiplier,1:prod(out_size),:);

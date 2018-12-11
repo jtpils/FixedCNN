@@ -1,5 +1,5 @@
 function res = LiteConv2d(im,ker,z_im,z_ker,z_res,s1,s2,s3,ConvType,stride,padding,bias)
-    wordlen = 32;
+    wordlen = 24;
     fraclen = 0;
     
     f = fimath('CastBeforeSum',0, 'OverflowMode', 'Saturate', 'RoundMode', 'floor', ... 
@@ -22,11 +22,10 @@ function res = LiteConv2d(im,ker,z_im,z_ker,z_res,s1,s2,s3,ConvType,stride,paddi
     conv_res = nn.AddBias(conv_res,fi(bias,t,f),t,f);
     
     % OutputStage
-    [mul,n] = getShiftBits(s1,s2,s3,16);
+    [mul,n] = getShiftBits(s1,s2,s3,8);
     res = bitshift(conv_res*mul,-n)+ fi(z_res,t,f);
     res = fi(res,0,8,0);
 end
-
 
 function [mul,n] = getShiftBits(s1,s2,s3,base)
     M = s1*s2/s3;

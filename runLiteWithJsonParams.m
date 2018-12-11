@@ -1,6 +1,14 @@
 % Author: Zhao Mingxin
-% Date:   2018/12/09
-% Description: 
+% Date:   2018/12/10
+% Description: Run tflite fixed point CNN using JSON parameters.
+%{
+    JSON file should be converted from .tflite file using flatc interpreter. 
+    After you extract network parameters, you can call this function to run
+    a fixed point CNN. More details please refer to TensorFlow API and
+    Google 8-bit quantization paper:
+    
+    If you have any issues about this code, please feedback.
+%}
 
 function res = runLiteWithJsonParams(par,inputs,t,f)
     op_parse = par.subgraphs.operators;
