@@ -15,8 +15,8 @@ function res = runLiteWithJsonParams(par,inputs,t,f)
     tensor_list = par.subgraphs.tensors;
     tensor_buffer = par.buffers;
     
-    input_node = par.subgraphs.inputs;
-    output_node = par.subgraphs.outputs;
+%     input_node = par.subgraphs.inputs;
+%     output_node = par.subgraphs.outputs;
     
     for i=1:length(op_parse)
         if i==1
@@ -83,7 +83,10 @@ function res = runLiteWithJsonParams(par,inputs,t,f)
                 padding = pool_op.padding;
                 stride = [pool_op.stride_h,pool_op.stride_w];
                 window_shape = [pool_op.filter_height,pool_op.filter_width];
+                
+                net = fi(net,t,f);
                 net = nn.Pooling(net,t,f,window_shape,'AVG',stride,padding);
+                net = fi(net,0,8,0);
             otherwise
                 warning('Unknown OP type detected.');
         end
