@@ -1,6 +1,6 @@
 ### Fast CPU-based Multicore Parallel Fixed-point CNN Simulation Library (Deprecated)
 
-### This project is now deprecated and updated to FAST-CNN repository. As the function of Fixed-CNN becomes more and more complex, the codes are hard to maintain so I just re-organize the source code and make a OOP-version named FAST-CNN which means Fixed-point Arithmetic Simulation Toobox for CNN.
+### This project is now deprecated and updated to FAST-CNN repository. As the function of Fixed-CNN becomes more and more complex, the codes are hard to maintain so I just re-organize the source code and make an OOP-version named FAST-CNN which means Fixed-point Arithmetic Simulation Toobox for CNN.
 
 The motivation for this project is creating a general library which can simulate a CNN with fixed-point operations fast. Since **Python** is poor in fixed-point calculation support, I try to write the project in MATLAB thoroughly. While the fi object in MATLAB can conviniently express fixed-point(FP) operations, there are still many functions in MATLAB that don't support fi. So I have to rewrite a lot of basic functions such as conv2d etc step by step.
 
